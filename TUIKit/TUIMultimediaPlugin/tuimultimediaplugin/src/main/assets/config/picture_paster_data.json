@@ -1,0 +1,143 @@
+{
+  "paster_type_list": [
+    {
+      "type_name": "",
+      "type_icon_path": "@drawable/emoji_48",
+      "paster_item_list": [
+        {
+          "item_icon_path": "@drawable/multimedia_plugin_edit_paster_file_selector",
+          "item_is_file_selector": true
+        },
+        {
+          "item_icon_path": "@drawable/emoji_31",
+          "item_image_path": "@drawable/emoji_31"
+        },
+        {
+          "item_icon_path": "@drawable/emoji_4",
+          "item_image_path": "@drawable/emoji_4"
+        },
+        {
+          "item_icon_path": "@drawable/emoji_10",
+          "item_image_path": "@drawable/emoji_10"
+        },
+        {
+          "item_icon_path": "@drawable/emoji_35",
+          "item_image_path": "@drawable/emoji_35"
+        }
+      ]
+    },
+    {
+      "type_icon_path": "file:///asset/4351/ys02@2x.png",
+      "type_name": "@string/multimedia_plugin_default",
+      "paster_item_list": [
+        {
+          "item_image_path": "file:///asset/4351/ys00@2x.png",
+          "item_icon_path": "file:///asset/4351/ys00@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4351/ys01@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4351/ys02@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4351/ys03@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4351/ys04@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4351/ys05@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4351/ys06@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4351/ys07@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4351/ys08@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4351/ys09@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4351/ys10@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4351/ys11@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4351/ys12@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4351/ys13@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4351/ys14@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4351/ys15@2x.png"
+        }
+      ]
+    },
+    {
+      "type_icon_path": "file:///asset/4352/gcs05@2x.png",
+      "type_name": "@string/multimedia_plugin_default",
+      "paster_item_list": [
+        {
+          "item_image_path": "file:///asset/4352/gcs00@2x.png",
+          "item_icon_path": "file:///asset/4352/gcs00@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4352/gcs01@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4352/gcs02@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4352/gcs03@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4352/gcs04@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4352/gcs05@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4352/gcs06@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4352/gcs07@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4352/gcs08@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4352/gcs09@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4352/gcs10@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4352/gcs11@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4352/gcs12@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4352/gcs13@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4352/gcs14@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4352/gcs15@2x.png"
+        },
+        {
+          "item_image_path": "file:///asset/4352/gcs16@2x.png"
+        }
+      ]
+    }
+  ]
+}

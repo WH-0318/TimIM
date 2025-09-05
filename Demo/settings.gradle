@@ -26,6 +26,7 @@ if (currentVersion == "7.0") {
             maven { url "https://mirrors.tencent.com/nexus/repository/maven-public/" }
             maven {url 'https://developer.huawei.com/repo/'}
             maven {url 'https://developer.hihonor.com/repo'}
+            maven { url 'https://jitpack.io' }
         }
     }
 }

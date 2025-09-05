@@ -16,12 +16,19 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.hjq.http.EasyHttp;
+import com.hjq.http.listener.OnHttpListener;
 import com.tencent.qcloud.tim.demo.R;
 import com.tencent.qcloud.tim.demo.TIMAppService;
 import com.tencent.qcloud.tim.demo.bean.UserInfo;
 import com.tencent.qcloud.tim.demo.config.AppConfig;
+import com.tencent.qcloud.tim.demo.http.api.LoginApi;
+import com.tencent.qcloud.tim.demo.http.api.RegisterApi;
 import com.tencent.qcloud.tim.demo.main.MainActivity;
 import com.tencent.qcloud.tim.demo.main.MainMinimalistActivity;
 import com.tencent.qcloud.tim.demo.signature.GenerateTestUserSig;
@@ -91,6 +98,12 @@ public class LoginForDevActivity extends BaseLightActivity {
         languageTv = findViewById(R.id.demo_login_language);
         modifyTheme = findViewById(R.id.modify_theme);
         logo = findViewById(R.id.logo);
+        findViewById(R.id.tv_register).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginForDevActivity.this, RegisterActivity.class));
+            }
+        });
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
@@ -103,45 +116,11 @@ public class LoginForDevActivity extends BaseLightActivity {
         // https://github.com/tencentyun/TIMSDK/tree/master/Android
         mUserAccount = findViewById(R.id.login_user);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        EditText etPwd = findViewById(R.id.et_pwd);
         mLoginView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TIMAppService.getInstance().initBeforeLogin(0);
-                mLoginView.setEnabled(false);
-                final String userID = mUserAccount.getText().toString();
-                final String userSig = GenerateTestUserSig.genTestUserSig(mUserAccount.getText().toString());
-                LoginWrapper.getInstance().loginIMSDK(
-                    LoginForDevActivity.this, AppConfig.DEMO_SDK_APPID, userID, userSig, TUIUtils.getLoginConfig(), new TUICallback() {
-                        @Override
-                        public void onError(final int code, final String desc) {
-                            runOnUiThread(new Runnable() {
-                                public void run() {
-                                    ToastUtil.toastLongMessage(getString(R.string.failed_login_tip) + ", errCode = " + code + ", errInfo = " + desc);
-                                    mLoginView.setEnabled(true);
-                                }
-                            });
-                            DemoLog.i(TAG, "imLogin errorCode = " + code + ", errorInfo = " + desc);
-                        }
-
-                        @Override
-                        public void onSuccess() {
-                            UserInfo.getInstance().setUserId(userID);
-                            UserInfo.getInstance().setUserSig(userSig);
-                            UserInfo.getInstance().setAutoLogin(true);
-                            UserInfo.getInstance().setDebugLogin(true);
-                            Intent intent;
-                            if (AppConfig.DEMO_UI_STYLE == AppConfig.DEMO_UI_STYLE_CLASSIC) {
-                                intent = new Intent(LoginForDevActivity.this, MainActivity.class);
-                            } else {
-                                intent = new Intent(LoginForDevActivity.this, MainMinimalistActivity.class);
-                            }
-                            startActivity(intent);
-
-                            TIMAppService.getInstance().registerPushManually();
-
-                            finish();
-                        }
-                    });
+                login(mUserAccount.getText().toString(), etPwd.getText().toString());
             }
         });
 
@@ -183,6 +162,75 @@ public class LoginForDevActivity extends BaseLightActivity {
                 ThemeSelectActivity.startSelectTheme(LoginForDevActivity.this);
             }
         });
+    }
+
+    private void login(String account, String password) {
+        if (TextUtils.isEmpty(account)) {
+            com.trtc.tuikit.common.util.ToastUtil.toastShortMessage("请先输入账号");
+            return;
+        }
+        if (TextUtils.isEmpty(password)) {
+            com.trtc.tuikit.common.util.ToastUtil.toastShortMessage("请先输入密码");
+            return;
+        }
+        realLogin(account, password);
+    }
+
+    private void realLogin(String account, String password) {
+        EasyHttp.post(this)
+                .api(new LoginApi()
+                        .setUsername(account)
+                        .setPassword(password)
+                ).request(new OnHttpListener<Object>() {
+                    @Override
+                    public void onHttpSuccess(@NonNull Object result) {
+                        loginIM();
+                    }
+
+                    @Override
+                    public void onHttpFail(@NonNull Throwable throwable) {
+                        com.trtc.tuikit.common.util.ToastUtil.toastShortMessage(throwable.getMessage());
+                    }
+                });
+    }
+
+    private void loginIM() {
+        TIMAppService.getInstance().initBeforeLogin(0);
+        mLoginView.setEnabled(false);
+        final String userID = mUserAccount.getText().toString();
+        final String userSig = GenerateTestUserSig.genTestUserSig(mUserAccount.getText().toString());
+        LoginWrapper.getInstance().loginIMSDK(
+                LoginForDevActivity.this, AppConfig.DEMO_SDK_APPID, userID, userSig, TUIUtils.getLoginConfig(), new TUICallback() {
+                    @Override
+                    public void onError(final int code, final String desc) {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                ToastUtil.toastLongMessage(getString(R.string.failed_login_tip) + ", errCode = " + code + ", errInfo = " + desc);
+                                mLoginView.setEnabled(true);
+                            }
+                        });
+                        DemoLog.i(TAG, "imLogin errorCode = " + code + ", errorInfo = " + desc);
+                    }
+
+                    @Override
+                    public void onSuccess() {
+                        UserInfo.getInstance().setUserId(userID);
+                        UserInfo.getInstance().setUserSig(userSig);
+                        UserInfo.getInstance().setAutoLogin(true);
+                        UserInfo.getInstance().setDebugLogin(true);
+                        Intent intent;
+                        if (AppConfig.DEMO_UI_STYLE == AppConfig.DEMO_UI_STYLE_CLASSIC) {
+                            intent = new Intent(LoginForDevActivity.this, MainActivity.class);
+                        } else {
+                            intent = new Intent(LoginForDevActivity.this, MainMinimalistActivity.class);
+                        }
+                        startActivity(intent);
+
+                        TIMAppService.getInstance().registerPushManually();
+
+                        finish();
+                    }
+                });
     }
 
     @Override

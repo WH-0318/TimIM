@@ -24,4 +24,34 @@ public final class LoginApi implements IRequestApi {
         this.password = password;
         return this;
     }
+
+    public static final class Bean {
+
+        private int isFaceAuth;
+        private String imAccountUsername;
+        private String imUserSig;
+        private String token;
+        private String tokenHead;
+
+        public int getIsFaceAuth() {
+            return isFaceAuth;
+        }
+
+        public String getImAccountUsername() {
+            return imAccountUsername;
+        }
+
+        public String getImUserSig() {
+            return imUserSig;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public String getTokenHead() {
+            return tokenHead;
+        }
+    }
+
 }

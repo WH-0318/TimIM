@@ -28,10 +28,9 @@ import com.tencent.qcloud.tim.demo.TIMAppService;
 import com.tencent.qcloud.tim.demo.bean.UserInfo;
 import com.tencent.qcloud.tim.demo.config.AppConfig;
 import com.tencent.qcloud.tim.demo.http.api.LoginApi;
-import com.tencent.qcloud.tim.demo.http.api.RegisterApi;
+import com.tencent.qcloud.tim.demo.http.model.HttpData;
 import com.tencent.qcloud.tim.demo.main.MainActivity;
 import com.tencent.qcloud.tim.demo.main.MainMinimalistActivity;
-import com.tencent.qcloud.tim.demo.signature.GenerateTestUserSig;
 import com.tencent.qcloud.tim.demo.utils.Constants;
 import com.tencent.qcloud.tim.demo.utils.DemoLog;
 import com.tencent.qcloud.tim.demo.utils.TUIUtils;
@@ -181,10 +180,16 @@ public class LoginForDevActivity extends BaseLightActivity {
                 .api(new LoginApi()
                         .setUsername(account)
                         .setPassword(password)
-                ).request(new OnHttpListener<Object>() {
+                )
+                .request(new OnHttpListener<HttpData<LoginApi.Bean>>() {
                     @Override
-                    public void onHttpSuccess(@NonNull Object result) {
-                        loginIM();
+                    public void onHttpSuccess(@NonNull HttpData<LoginApi.Bean> result) {
+                        LoginApi.Bean userInfo = result.getData();
+                        if (userInfo != null) {
+                            loginIM(userInfo);
+                        } else {
+                            com.trtc.tuikit.common.util.ToastUtil.toastShortMessage(result.getMessage());
+                        }
                     }
 
                     @Override
@@ -194,11 +199,11 @@ public class LoginForDevActivity extends BaseLightActivity {
                 });
     }
 
-    private void loginIM() {
+    private void loginIM(LoginApi.Bean userInfo) {
         TIMAppService.getInstance().initBeforeLogin(0);
         mLoginView.setEnabled(false);
-        final String userID = mUserAccount.getText().toString();
-        final String userSig = GenerateTestUserSig.genTestUserSig(mUserAccount.getText().toString());
+        final String userID = userInfo.getImAccountUsername();
+        final String userSig = userInfo.getImUserSig();
         LoginWrapper.getInstance().loginIMSDK(
                 LoginForDevActivity.this, AppConfig.DEMO_SDK_APPID, userID, userSig, TUIUtils.getLoginConfig(), new TUICallback() {
                     @Override

@@ -1,231 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:id="@+id/modify_style"
+    <ImageView
+        android:id="@+id/iv_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/img_login_header"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="10dp"
-        android:layout_toStartOf="@id/modify_theme"
-        android:orientation="horizontal"
-        tools:visibility="visible">
+        android:layout_marginTop="12dp"
+        android:text="登录"
+        android:textSize="17dp"
+        android:textColor="#1D2129"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-        <ImageView
-            android:id="@+id/demo_login_style_icon"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:background="@drawable/demo_login_style_icon" />
-
-        <TextView
-            android:id="@+id/demo_login_style_tv"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:text="@string/modify_style"
-            android:textColor="@color/demo_login_theme_language_text_color_light"
-            android:textSize="12sp" />
-
-        <ImageView
-            android:id="@+id/demo_login_style_arrow"
-            android:layout_width="9.6dp"
-            android:layout_height="9.6dp"
-            android:layout_marginTop="3dp"
-            android:background="@drawable/demo_login_language_arrow_light" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/modify_theme"
+    <ImageView
+        android:id="@+id/iv_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="10dp"
-        android:layout_toStartOf="@id/language_area"
-        android:orientation="horizontal"
-        tools:visibility="visible">
+        android:layout_marginBottom="3dp"
+        android:src="@drawable/img_app_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/iv_header" />
 
-        <ImageView
-            android:id="@+id/demo_login_theme_icon"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:background="@drawable/demo_login_theme_icon_light" />
-
-        <TextView
-            android:id="@+id/demo_login_theme_tv"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:text="@string/modify_theme"
-            android:textColor="@color/demo_login_theme_language_text_color_light"
-            android:textSize="12sp" />
-
-        <ImageView
-            android:id="@+id/demo_login_theme_arrow"
-            android:layout_width="9.6dp"
-            android:layout_height="9.6dp"
-            android:layout_marginTop="3dp"
-            android:background="@drawable/demo_login_language_arrow_light" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/language_area"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="12dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_centerHorizontal="true"
+        android:bottom="@id/iv_app_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/iv_app_name"/>
+
+    <com.allen.library.shape.ShapeLinearLayout
+        android:id="@+id/ll_account"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="47dp"
+        android:layout_marginHorizontal="38dp"
         android:orientation="horizontal"
-        tools:visibility="visible">
+        app:shapeSolidColor="@color/white"
+        app:shapeCornersRadius="10dp"
+        app:layout_constraintTop_toBottomOf="@id/iv_header">
+        <EditText
+            android:id="@+id/et_account"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="16dp"
+            android:gravity="center_vertical"
+            android:textSize="17dp"
+            android:textColor="#1D2129"
+            android:background="@color/transparent"
+            android:hint="请输入账号"
+            android:inputType="number"
+            android:textColorHint="#A9AEB8"
+            android:maxLength="20"
+            android:textCursorDrawable="@drawable/common_edit_cursor"
+            android:singleLine="true" />
+    </com.allen.library.shape.ShapeLinearLayout>
 
-        <ImageView
-            android:id="@+id/demo_login_language_icon"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:background="@drawable/demo_login_language_icon_light" />
-
-        <TextView
-            android:id="@+id/demo_login_language"
-            android:layout_weight="1"
+    <com.allen.library.shape.ShapeLinearLayout
+        android:id="@+id/ll_pwd"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@id/ll_account"
+        app:layout_constraintEnd_toEndOf="@id/ll_account"
+        app:shapeSolidColor="@color/white"
+        app:shapeCornersRadius="10dp"
+        app:layout_constraintTop_toBottomOf="@id/ll_account">
+        <EditText
+            android:id="@+id/et_pwd"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:text="@string/demo_language"
-            android:textColor="@color/demo_login_theme_language_text_color_light"
-            android:textSize="12sp" />
-
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingHorizontal="16dp"
+            android:hint="请输入账号密码"
+            android:textColorHint="#A9AEB8"
+            android:maxLength="20"
+            android:textSize="17dp"
+            android:textColor="#1D2129"
+            android:inputType="textPassword"
+            android:background="@color/transparent"/>
         <ImageView
-            android:id="@+id/demo_login_language_arrow"
-            android:layout_width="9.6dp"
-            android:layout_height="9.6dp"
-            android:layout_marginTop="3dp"
-            android:background="@drawable/demo_login_language_arrow_light" />
+            android:id="@+id/iv_visible"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="16dp"
+            android:src="@drawable/img_pwd_visible"/>
+    </com.allen.library.shape.ShapeLinearLayout>
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_forget_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="忘记密码?"
+        android:textSize="14sp"
+        android:textColor="#6B7785"
+        app:layout_constraintTop_toBottomOf="@id/ll_pwd"
+        app:layout_constraintEnd_toEndOf="@id/ll_pwd"/>
 
+    <com.allen.library.shape.ShapeTextView
+        android:id="@+id/tv_login"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="@string/button_login"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
+        android:alpha="0.3"
+        app:shapeSolidColor="@color/colorPrimary"
+        app:shapeCornersRadius="22dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_forget_pwd"
+        app:layout_constraintStart_toStartOf="@id/ll_account"
+        app:layout_constraintEnd_toEndOf="@id/ll_account"/>
+
+    <TextView
+        android:id="@+id/tv_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="注册"
+        android:textColor="#6B7785"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="20dp"
-        android:orientation="vertical">
-
+        android:layout_marginBottom="18dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
         <ImageView
-            android:id="@+id/logo"
-            android:layout_width="200dp"
-            android:layout_height="125dp"
-            android:layout_gravity="center_horizontal"
-            android:background="?attr/demo_login_ic_logo" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="60dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:textSize="16sp"
-                android:gravity="start|center_vertical"
-                android:layout_marginEnd="16dp"
-                android:text="手机号"
-                android:textColor="#000" />
-
-            <EditText
-                android:id="@+id/login_user"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="15.36sp"
-                android:background="@null"
-                android:textAlignment="viewStart"
-                android:hint="请输入手机号"
-                android:inputType="number"
-                android:maxLength="20"
-                android:textCursorDrawable="@drawable/common_edit_cursor"
-                android:singleLine="true" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/item_split_color" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="24dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:textSize="16sp"
-                android:gravity="start|center_vertical"
-                android:layout_marginEnd="16dp"
-                android:text="密码"
-                android:textColor="#000" />
-
-            <EditText
-                android:id="@+id/et_pwd"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="15.36sp"
-                android:background="@null"
-                android:textAlignment="viewStart"
-                android:inputType="textPassword"
-                android:hint="请输入密码"
-                android:maxLength="20"
-                android:textCursorDrawable="@drawable/common_edit_cursor"
-                android:singleLine="true" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/item_split_color" />
-
-        <TextView
-            android:id="@+id/tv_register"
+            android:id="@+id/iv_check"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_gravity="end"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:text="注册"
-            android:textColor="@color/black_font_color"
-            android:textSize="18sp" />
-
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_check"/>
         <TextView
-            android:id="@+id/login_btn"
-            android:layout_width="match_parent"
-            android:layout_height="44.16dp"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp"
-            android:layout_marginTop="28.8dp"
-            android:background="@drawable/button_border"
-            android:gravity="center"
-            android:text="@string/button_login"
-            android:textColor="@color/colorWhite"
-            android:textSize="18sp" />
-
-
+            android:id="@+id/tv_protocol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:text="我已阅读并同意《隐私政策》和《用户协议》"
+            android:textSize="13dp"
+            android:textColor="#6B7785"/>
     </LinearLayout>
 
-
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

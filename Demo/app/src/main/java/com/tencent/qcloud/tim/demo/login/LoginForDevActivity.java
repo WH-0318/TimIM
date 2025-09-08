@@ -1,9 +1,6 @@
 package com.tencent.qcloud.tim.demo.login;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,10 +16,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.OnHttpListener;
+import com.tencent.cloud.tuikit.roomkit.common.utils.BusinessSceneUtil;
 import com.tencent.qcloud.tim.demo.R;
 import com.tencent.qcloud.tim.demo.TIMAppService;
 import com.tencent.qcloud.tim.demo.bean.UserInfo;
@@ -31,10 +28,9 @@ import com.tencent.qcloud.tim.demo.http.api.LoginApi;
 import com.tencent.qcloud.tim.demo.http.model.HttpData;
 import com.tencent.qcloud.tim.demo.main.MainActivity;
 import com.tencent.qcloud.tim.demo.main.MainMinimalistActivity;
-import com.tencent.qcloud.tim.demo.utils.Constants;
+import com.tencent.qcloud.tim.demo.utils.BusinessHelper;
 import com.tencent.qcloud.tim.demo.utils.DemoLog;
 import com.tencent.qcloud.tim.demo.utils.TUIUtils;
-import com.tencent.qcloud.tuicore.TUIThemeManager;
 import com.tencent.qcloud.tuicore.interfaces.TUICallback;
 import com.tencent.qcloud.tuicore.util.ToastUtil;
 import com.tencent.qcloud.tuikit.timcommon.component.activities.BaseLightActivity;
@@ -50,38 +46,12 @@ public class LoginForDevActivity extends BaseLightActivity {
     private static final String TAG = LoginForDevActivity.class.getSimpleName();
     private TextView mLoginView;
     private EditText mUserAccount;
-    private TextView languageTv, styleTv;
-    private View languageArea, styleArea;
-    private View modifyTheme;
-    private ImageView logo;
-
-    private BroadcastReceiver languageChangedReceiver;
-    private BroadcastReceiver themeChangedReceiver;
+    private EditText etPwd;
+    private ImageView ivCheck;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        languageChangedReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                initActivity();
-            }
-        };
-
-        themeChangedReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                setCurrentTheme();
-            }
-        };
-
-        IntentFilter languageFilter = new IntentFilter();
-        IntentFilter themeFilter = new IntentFilter();
-        languageFilter.addAction(Constants.DEMO_LANGUAGE_CHANGED_ACTION);
-        themeFilter.addAction(Constants.DEMO_THEME_CHANGED_ACTION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(languageChangedReceiver, languageFilter);
-        LocalBroadcastManager.getInstance(this).registerReceiver(themeChangedReceiver, themeFilter);
-
         initActivity();
     }
 
@@ -89,14 +59,6 @@ public class LoginForDevActivity extends BaseLightActivity {
         setContentView(R.layout.login_for_dev_activity);
         View view = findViewById(android.R.id.content);
         view.setLayoutDirection(getResources().getConfiguration().getLayoutDirection());
-
-        styleArea = findViewById(R.id.modify_style);
-        styleTv = findViewById(R.id.demo_login_style_tv);
-
-        languageArea = findViewById(R.id.language_area);
-        languageTv = findViewById(R.id.demo_login_language);
-        modifyTheme = findViewById(R.id.modify_theme);
-        logo = findViewById(R.id.logo);
         findViewById(R.id.tv_register).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,12 +72,23 @@ public class LoginForDevActivity extends BaseLightActivity {
             getWindow().setNavigationBarColor(Color.TRANSPARENT);
         }
 
-        mLoginView = findViewById(R.id.login_btn);
+        mLoginView = findViewById(R.id.tv_login);
 
         // https://github.com/tencentyun/TIMSDK/tree/master/Android
-        mUserAccount = findViewById(R.id.login_user);
+        mUserAccount = findViewById(R.id.et_account);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        EditText etPwd = findViewById(R.id.et_pwd);
+        etPwd = findViewById(R.id.et_pwd);
+        BusinessHelper.setPwdVisible(findViewById(R.id.iv_visible), etPwd);
+        BusinessHelper.initProtocol(findViewById(R.id.tv_protocol));
+        ivCheck = findViewById(R.id.iv_check);
+        ivCheck.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ivCheck.setSelected(!ivCheck.isSelected());
+                    }
+                }
+        );
         mLoginView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,44 +105,50 @@ public class LoginForDevActivity extends BaseLightActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (TextUtils.isEmpty(mUserAccount.getText())) {
-                    mLoginView.setEnabled(false);
-                } else {
-                    mLoginView.setEnabled(true);
-                }
+                updateLoginTextStyle();
             }
         });
         mUserAccount.setText(UserInfo.getInstance().getUserId());
 
-        languageArea.setOnClickListener(new View.OnClickListener() {
+        etPwd.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                LanguageSelectActivity.startSelectLanguage(LoginForDevActivity.this);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                updateLoginTextStyle();
             }
         });
 
-        styleArea.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.tv_forget_pwd).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StyleSelectActivity.startStyleSelectActivity(LoginForDevActivity.this);
+                ToastUtil.toastShortMessage("忘记密码");
             }
         });
+        updateLoginTextStyle();
+    }
 
-        modifyTheme.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ThemeSelectActivity.startSelectTheme(LoginForDevActivity.this);
-            }
-        });
+    private void updateLoginTextStyle() {
+        if (TextUtils.isEmpty(mUserAccount.getText()) || TextUtils.isEmpty(etPwd.getText().toString())) {
+            mLoginView.setEnabled(false);
+            mLoginView.setAlpha(0.3f);
+        } else {
+            mLoginView.setEnabled(true);
+            mLoginView.setAlpha(1f);
+        }
     }
 
     private void login(String account, String password) {
-        if (TextUtils.isEmpty(account)) {
-            com.trtc.tuikit.common.util.ToastUtil.toastShortMessage("请先输入账号");
-            return;
-        }
-        if (TextUtils.isEmpty(password)) {
-            com.trtc.tuikit.common.util.ToastUtil.toastShortMessage("请先输入密码");
+        if (!ivCheck.isSelected()) {
+            com.trtc.tuikit.common.util.ToastUtil.toastShortMessage("请先阅读并同意隐私政策和用户协议");
             return;
         }
         realLogin(account, password);
@@ -239,49 +218,10 @@ public class LoginForDevActivity extends BaseLightActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (AppConfig.DEMO_UI_STYLE == AppConfig.DEMO_UI_STYLE_CLASSIC) {
-            modifyTheme.setVisibility(View.VISIBLE);
-            styleTv.setText(getString(R.string.style_classic));
-        } else {
-            modifyTheme.setVisibility(View.GONE);
-            styleTv.setText(getString(R.string.style_minimalist));
-        }
-    }
-
-    private void setCurrentTheme() {
-        int currentTheme = TUIThemeManager.getInstance().getCurrentTheme();
-        if (currentTheme == TUIThemeManager.THEME_LIGHT) {
-            logo.setBackgroundResource(R.drawable.demo_ic_logo_light);
-            mLoginView.setBackgroundResource(R.drawable.button_border_light);
-        } else if (currentTheme == TUIThemeManager.THEME_LIVELY) {
-            logo.setBackgroundResource(R.drawable.demo_ic_logo_lively);
-            mLoginView.setBackgroundResource(R.drawable.button_border_lively);
-        } else if (currentTheme == TUIThemeManager.THEME_SERIOUS) {
-            logo.setBackgroundResource(R.drawable.demo_ic_logo_serious);
-            mLoginView.setBackgroundResource(R.drawable.button_border_serious);
-        }
-    }
-
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             finish();
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (themeChangedReceiver != null) {
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(themeChangedReceiver);
-            themeChangedReceiver = null;
-        }
-        if (languageChangedReceiver != null) {
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(languageChangedReceiver);
-            languageChangedReceiver = null;
-        }
     }
 }

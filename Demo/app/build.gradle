@@ -186,4 +186,5 @@ dependencies {
     implementation ('com.tencent:mmkv-static:1.3.2') {
         exclude group: 'androidx.annotation', module: 'annotation'
     }
+    implementation 'com.github.lygttpod:SuperTextView:2.4.6'
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><manifest>
-  <application xmlns:android="http://schemas.android.com/apk/res/android" android:supportsRtl="true" android:label="@string/demo_app_name" android:name="com.tencent.qcloud.tim.demo.DemoApplication" android:theme="@style/DemoAppTheme" android:icon="@drawable/ic_launcher" android:allowBackup="false">
+  <application xmlns:android="http://schemas.android.com/apk/res/android" android:supportsRtl="true" android:label="@string/demo_app_name" android:name="com.tencent.qcloud.tim.demo.DemoApplication" android:theme="@style/DemoAppTheme" android:icon="@mipmap/ic_launcher" android:allowBackup="false">
     <activity android:screenOrientation="portrait" android:name="com.tencent.qcloud.tim.demo.SplashActivity" android:theme="@style/SplashTheme" android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.VIEW"/>

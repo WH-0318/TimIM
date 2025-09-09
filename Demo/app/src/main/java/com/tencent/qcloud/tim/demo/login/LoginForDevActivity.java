@@ -34,6 +34,7 @@ import com.tencent.qcloud.tim.demo.utils.TUIUtils;
 import com.tencent.qcloud.tuicore.interfaces.TUICallback;
 import com.tencent.qcloud.tuicore.util.ToastUtil;
 import com.tencent.qcloud.tuikit.timcommon.component.activities.BaseLightActivity;
+import com.tencent.qcloud.tuikit.tuicallkit.common.data.Logger;
 
 /**
  *
@@ -65,13 +66,6 @@ public class LoginForDevActivity extends BaseLightActivity {
                 startActivity(new Intent(LoginForDevActivity.this, RegisterActivity.class));
             }
         });
-        if (Build.VERSION.SDK_INT >= 21) {
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-            getWindow().setNavigationBarColor(Color.TRANSPARENT);
-        }
-
         mLoginView = findViewById(R.id.tv_login);
 
         // https://github.com/tencentyun/TIMSDK/tree/master/Android
@@ -96,36 +90,8 @@ public class LoginForDevActivity extends BaseLightActivity {
             }
         });
 
-        mUserAccount.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                updateLoginTextStyle();
-            }
-        });
         mUserAccount.setText(UserInfo.getInstance().getUserId());
-
-        etPwd.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                updateLoginTextStyle();
-            }
-        });
+        BusinessHelper.updateTextStyle(mLoginView, mUserAccount, etPwd);
 
         findViewById(R.id.tv_forget_pwd).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +99,6 @@ public class LoginForDevActivity extends BaseLightActivity {
                 ToastUtil.toastShortMessage("忘记密码");
             }
         });
-        updateLoginTextStyle();
     }
 
     private void updateLoginTextStyle() {
@@ -183,6 +148,7 @@ public class LoginForDevActivity extends BaseLightActivity {
         mLoginView.setEnabled(false);
         final String userID = userInfo.getImAccountUsername();
         final String userSig = userInfo.getImUserSig();
+        Logger.INSTANCE.e("out", "userSig===" + userSig);
         LoginWrapper.getInstance().loginIMSDK(
                 LoginForDevActivity.this, AppConfig.DEMO_SDK_APPID, userID, userSig, TUIUtils.getLoginConfig(), new TUICallback() {
                     @Override

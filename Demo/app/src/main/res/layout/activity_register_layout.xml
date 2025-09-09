@@ -16,6 +16,7 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="44dp"
+        android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="注册账户"
         android:textSize="17dp"
@@ -28,10 +29,10 @@
         android:id="@+id/iv_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:padding="10dp"
         android:src="@drawable/ic_back"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_title"
+        app:layout_constraintBottom_toBottomOf="@id/tv_title"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <com.allen.library.shape.ShapeLinearLayout

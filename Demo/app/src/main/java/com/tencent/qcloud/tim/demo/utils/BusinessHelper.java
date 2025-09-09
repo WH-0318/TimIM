@@ -1,9 +1,12 @@
 package com.tencent.qcloud.tim.demo.utils;
 
 import android.graphics.Color;
+import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.LinkMovementMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -63,6 +66,43 @@ public class BusinessHelper {
         tvProtocol.setText(builder);
         tvProtocol.setHighlightColor(Color.TRANSPARENT);
         tvProtocol.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    public static void updateTextStyle(TextView textView, EditText... editTexts) {
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                boolean allFilled = true;
+                for(EditText editText: editTexts) {
+                    if (TextUtils.isEmpty(editText.getText())) {
+                        allFilled = false;
+                        break;
+                    }
+                }
+                if (allFilled) {
+                    textView.setEnabled(true);
+                    textView.setAlpha(1f);
+                } else {
+                    textView.setEnabled(false);
+                    textView.setAlpha(0.3f);
+                }
+            }
+        };
+        for(EditText editText: editTexts) {
+            editText.addTextChangedListener(textWatcher);
+        }
+        textView.setEnabled(false);
+        textView.setAlpha(0.3f);
     }
 
     public static void setPwdVisible(ImageView ivVisible, EditText etPwd) {

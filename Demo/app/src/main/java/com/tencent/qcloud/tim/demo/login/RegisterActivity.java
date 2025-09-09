@@ -1,11 +1,19 @@
 package com.tencent.qcloud.tim.demo.login;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,6 +21,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.OnHttpListener;
@@ -86,6 +96,7 @@ public class RegisterActivity extends BaseLightActivity {
                 ivCheck.setSelected(!ivCheck.isSelected());
             }
         });
+        initLoginTextStyle(tvLogin);
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,44 +111,19 @@ public class RegisterActivity extends BaseLightActivity {
                     }
                 }
         );
-        updateRegisterBtnStyle();
-        setEditListener(etAccount);
-        setEditListener(etCode);
-        setEditListener(etPwd);
-        setEditListener(etConfirmPwd);
-        setEditListener(etInviteCode);
+        BusinessHelper.updateTextStyle(tvRegister, etAccount, etCode, etPwd, etConfirmPwd, etInviteCode);
     }
 
-    private void setEditListener(EditText editText) {
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    private void initLoginTextStyle(TextView loginText) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        builder.append("我有账号，");
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                updateRegisterBtnStyle();
-            }
-        });
-    }
-    private void updateRegisterBtnStyle() {
-        if (TextUtils.isEmpty(etAccount.getText())
-                || TextUtils.isEmpty(etCode.getText())
-                || TextUtils.isEmpty(etPwd.getText())
-                || TextUtils.isEmpty(etConfirmPwd.getText())
-                || TextUtils.isEmpty(etInviteCode.getText())) {
-            tvRegister.setEnabled(false);
-            tvRegister.setAlpha(0.3f);
-        } else {
-            tvRegister.setEnabled(true);
-            tvRegister.setAlpha(1f);
-        }
+        String loginSt = "立即登录";
+        int start = builder.length();
+        builder.append(loginSt);
+        int end = builder.length();
+        builder.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimary)), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        loginText.setText(builder);
     }
 
     private void getCode(String account) {

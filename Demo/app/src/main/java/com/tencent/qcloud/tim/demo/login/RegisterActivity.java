@@ -2,6 +2,7 @@ package com.tencent.qcloud.tim.demo.login;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,6 +30,7 @@ import com.hjq.http.listener.OnHttpListener;
 import com.tencent.qcloud.tim.demo.R;
 import com.tencent.qcloud.tim.demo.http.api.RegisterApi;
 import com.tencent.qcloud.tim.demo.http.api.SmsCodeApi;
+import com.tencent.qcloud.tim.demo.http.model.HttpData;
 import com.tencent.qcloud.tim.demo.utils.BusinessHelper;
 import com.tencent.qcloud.tuikit.timcommon.component.activities.BaseLightActivity;
 import com.trtc.tuikit.common.util.ToastUtil;
@@ -67,6 +69,13 @@ public class RegisterActivity extends BaseLightActivity {
         etInviteCode = findViewById(R.id.et_invite_code);
         ivCheck = findViewById(R.id.iv_check);
         tvRegister = findViewById(R.id.tv_register);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        }
         TextView tvLogin = findViewById(R.id.tv_login);
         BusinessHelper.setPwdVisible(findViewById(R.id.iv_visible), etPwd);
         BusinessHelper.setPwdVisible(findViewById(R.id.iv_confirm_visible), etConfirmPwd);
@@ -136,9 +145,9 @@ public class RegisterActivity extends BaseLightActivity {
         EasyHttp.post(this)
                 .api(new SmsCodeApi()
                         .setPhone(account)
-                ).request(new OnHttpListener<Object>() {
+                ).request(new OnHttpListener<HttpData<Object>>() {
                     @Override
-                    public void onHttpSuccess(@NonNull Object result) {
+                    public void onHttpSuccess(@NonNull HttpData<Object> result) {
                         ToastUtil.toastShortMessage("验证码已发送到您的手机，请注意查收~");
                         handler.sendEmptyMessage(1);
                     }
@@ -174,9 +183,9 @@ public class RegisterActivity extends BaseLightActivity {
                         .setPassword(password)
                         .setCode(code)
                         .setInviteCode(inviteCode)
-                ).request(new OnHttpListener<Object>() {
+                ).request(new OnHttpListener<HttpData<Object>>() {
                     @Override
-                    public void onHttpSuccess(@NonNull Object result) {
+                    public void onHttpSuccess(@NonNull HttpData<Object> result) {
                         ToastUtil.toastShortMessage("注册成功");
                         finish();
                     }

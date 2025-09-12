@@ -21,21 +21,21 @@ public class BaseLightActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            getWindow().setStatusBarColor(
-//                getResources().getColor(TUIThemeManager.getAttrResId(this, com.tencent.qcloud.tuicore.R.attr.core_header_start_color)));
-//            getWindow().setNavigationBarColor(getResources().getColor(R.color.navigation_bar_color));
-//            int vis = getWindow().getDecorView().getSystemUiVisibility();
-//            vis |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-//            vis |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-//            getWindow().getDecorView().setSystemUiVisibility(vis);
-//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(
+                getResources().getColor(TUIThemeManager.getAttrResId(this, com.tencent.qcloud.tuicore.R.attr.core_header_start_color)));
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.navigation_bar_color));
+            int vis = getWindow().getDecorView().getSystemUiVisibility();
+            vis |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            vis |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            getWindow().getDecorView().setSystemUiVisibility(vis);
+        }
 
-        ImmersionBar.with(this)
-                .statusBarDarkFont(true)
-                .init();
+//        ImmersionBar.with(this)
+//                .statusBarDarkFont(true)
+//                .init();
     }
 
     @Override

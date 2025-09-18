@@ -555,7 +555,7 @@ public class MainActivity extends BaseLightActivity {
     private void initTUIKitDemoUI() {
         if (TUIConfig.getTUIHostType() != TUIConfig.TUI_HOST_TYPE_RTCUBE) {
             mainTitleBar.getLeftGroup().setVisibility(View.GONE);
-            profileBean.text = R.string.minimalist_tab_settings_tab_text;
+            profileBean.text = R.string.tab_profile_tab_text;
             onTabBeanChanged(profileBean);
         } else {
             mainTitleBar.getLeftGroup().setVisibility(View.VISIBLE);

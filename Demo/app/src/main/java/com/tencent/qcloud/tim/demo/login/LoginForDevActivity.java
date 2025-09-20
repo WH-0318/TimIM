@@ -96,7 +96,7 @@ public class LoginForDevActivity extends BaseLightActivity {
             }
         });
 
-        mUserAccount.setText(UserInfo.getInstance().getUserId());
+        //mUserAccount.setText(UserInfo.getInstance().getUserId());
         BusinessHelper.updateTextStyle(mLoginView, mUserAccount, etPwd);
 
         findViewById(R.id.tv_forget_pwd).setOnClickListener(new View.OnClickListener() {

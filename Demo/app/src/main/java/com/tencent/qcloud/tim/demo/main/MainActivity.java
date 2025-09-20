@@ -532,7 +532,7 @@ public class MainActivity extends BaseLightActivity {
         params.width = titleBarIconSize;
         params.height = titleBarIconSize;
         mainTitleBar.getRightIcon().setLayoutParams(params);
-        setConversationMenu();
+        setContactMenu();
         initTUIKitDemoUI();
     }
 

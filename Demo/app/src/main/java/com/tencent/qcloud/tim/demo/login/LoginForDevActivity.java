@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -17,21 +15,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.hjq.http.EasyConfig;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.OnHttpListener;
-import com.tencent.cloud.tuikit.roomkit.common.utils.BusinessSceneUtil;
 import com.tencent.qcloud.tim.demo.R;
 import com.tencent.qcloud.tim.demo.TIMAppService;
 import com.tencent.qcloud.tim.demo.bean.UserInfo;
 import com.tencent.qcloud.tim.demo.config.AppConfig;
 import com.tencent.qcloud.tim.demo.http.api.LoginApi;
-import com.tencent.qcloud.tim.demo.http.model.HttpData;
+import com.tencent.qcloud.tuikit.timcommon.model.HttpData;
 import com.tencent.qcloud.tim.demo.main.MainActivity;
 import com.tencent.qcloud.tim.demo.main.MainMinimalistActivity;
 import com.tencent.qcloud.tim.demo.utils.BusinessHelper;
 import com.tencent.qcloud.tim.demo.utils.DemoLog;
 import com.tencent.qcloud.tim.demo.utils.TUIUtils;
 import com.tencent.qcloud.tuicore.interfaces.TUICallback;
+import com.tencent.qcloud.tuicore.util.SPUtils;
 import com.tencent.qcloud.tuicore.util.ToastUtil;
 import com.tencent.qcloud.tuikit.timcommon.component.activities.BaseLightActivity;
 import com.tencent.qcloud.tuikit.tuicallkit.common.data.Logger;
@@ -96,7 +95,7 @@ public class LoginForDevActivity extends BaseLightActivity {
             }
         });
 
-        mUserAccount.setText(UserInfo.getInstance().getUserId());
+        //mUserAccount.setText(UserInfo.getInstance().getUserId());
         BusinessHelper.updateTextStyle(mLoginView, mUserAccount, etPwd);
 
         findViewById(R.id.tv_forget_pwd).setOnClickListener(new View.OnClickListener() {
@@ -136,6 +135,9 @@ public class LoginForDevActivity extends BaseLightActivity {
                     public void onHttpSuccess(@NonNull HttpData<LoginApi.Bean> result) {
                         LoginApi.Bean userInfo = result.getData();
                         if (userInfo != null) {
+                            String token = userInfo.getTokenHead()  + userInfo.getToken();
+                            EasyConfig.getInstance().addHeader("Authorization", token);
+                            SPUtils.getInstance().put("token", token);
                             loginIM(userInfo);
                         } else {
                             com.trtc.tuikit.common.util.ToastUtil.toastShortMessage(result.getMessage());

@@ -42,6 +42,15 @@ public abstract class TUIMessageBean implements Serializable {
     private boolean isUseMsgReceiverAvatar = false;
     private boolean isEnableForward = true;
     private UserBean revoker;
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
+
     private boolean hasRiskContent = false;
     private int messageSource = 0;
     private MessageReceiptInfo messageReceiptInfo;
@@ -53,6 +62,7 @@ public abstract class TUIMessageBean implements Serializable {
     private Object processingThumbnail;
     private String userId = "";
     private String groupId = "";
+    private int role;
 
     public void setExcludeFromHistory(boolean excludeFromHistory) {
         this.excludeFromHistory = excludeFromHistory;
@@ -284,6 +294,14 @@ public abstract class TUIMessageBean implements Serializable {
             displayName = getSender();
         }
         return displayName;
+    }
+
+    public String getUserDisplayNameWithRole() {
+        String roleName = "";
+        if (getRole() == 1) {
+            roleName = "[管理员]";
+        }
+        return getUserDisplayName() + roleName;
     }
 
     public String getFaceUrl() {

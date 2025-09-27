@@ -54,7 +54,7 @@
 
     <dimen name="group_profile_member_grid_padding_left_right">19.2dp</dimen>
     <dimen name="group_profile_member_grid_padding_top">11.52dp</dimen>
-    <dimen name="group_profile_member_item_width">48dp</dimen>
+    <dimen name="group_profile_member_item_width">54dp</dimen>
     <dimen name="group_profile_member_item_name_size">9.6sp</dimen>
 
 </resources>

@@ -1,5 +1,10 @@
 package com.tencent.qcloud.tuikit.tuicontact.bean;
 
+import static com.tencent.imsdk.group.GroupMemberInfo.MEMBER_ROLE_ADMINISTRATOR;
+import static com.tencent.imsdk.group.GroupMemberInfo.MEMBER_ROLE_OWNER;
+
+import android.text.TextUtils;
+
 import com.tencent.imsdk.v2.V2TIMGroupMemberFullInfo;
 import com.tencent.qcloud.tuikit.timcommon.bean.UserBean;
 
@@ -45,5 +50,17 @@ public class GroupMemberInfo extends UserBean implements Serializable {
         setFaceUrl(info.getFaceUrl());
         setNickName(info.getNickName());
         return this;
+    }
+
+    public String getDisplayNameWithRole() {
+        String roleName = "";
+        if (getRole() == 1) {
+            roleName = "管理员";
+        }
+        if (!TextUtils.isEmpty(roleName)) {
+            return getDisplayName() + "[" + roleName + "]";
+        } else {
+            return getDisplayName();
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.tencent.qcloud.tim.demo.http.model;
+package com.tencent.qcloud.tuikit.timcommon.model;
 
 import java.util.List;
 

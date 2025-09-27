@@ -588,6 +588,11 @@ public class MainActivity extends BaseLightActivity {
             @Override
             public void onActionClick(int position, Object data) {
                 PopMenuAction action = (PopMenuAction) data;
+                if (TextUtils.equals(action.getActionName(), getResources().getString(R.string.add_friend))) {
+                    Bundle bundle = new Bundle();
+                    bundle.putBoolean(TUIContactConstants.GroupType.GROUP, false);
+                    TUIUtils.startActivity("AddMoreActivity", bundle);
+                }
                 if (TextUtils.equals(action.getActionName(), getResources().getString(R.string.start_conversation))) {
                     TUIUtils.startActivity("StartC2CChatActivity", null);
                 }
@@ -620,10 +625,9 @@ public class MainActivity extends BaseLightActivity {
         List<PopMenuAction> menuActions = new ArrayList<>();
 
         PopMenuAction action = new PopMenuAction();
-
-        action.setActionName(getResources().getString(R.string.start_conversation));
+        action.setActionName(getResources().getString(R.string.add_friend));
+        action.setIconResId(R.drawable.demo_add_friend);
         action.setActionClickListener(popActionClickListener);
-        action.setIconResId(R.drawable.create_c2c);
         menuActions.add(action);
 
         action = new PopMenuAction();

@@ -9,6 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.blankj.utilcode.util.CollectionUtils;
+import com.tencent.imsdk.v2.V2TIMManager;
+import com.tencent.imsdk.v2.V2TIMUserFullInfo;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.qcloud.tuikit.timcommon.component.CustomLinearLayoutManager;
 import com.tencent.qcloud.tuikit.tuicontact.R;
 import com.tencent.qcloud.tuikit.tuicontact.bean.ContactItemBean;
@@ -121,6 +126,46 @@ public class ContactListView extends LinearLayout implements IContactListView {
         mAdapter.setDataSource(mData);
         mIndexBar.setSourceDatas(mData).invalidate();
         mDecoration.setDatas(mData);
+        updateContactInfo(mData);
+    }
+
+    public void updateContactInfo(List<ContactItemBean> contactList) {
+        if (CollectionUtils.isEmpty(contactList)) {
+            return;
+        }
+        List<String> idList = new ArrayList<>();
+        for (ContactItemBean item: contactList) {
+            idList.add(item.getId());
+        }
+        V2TIMManager.getInstance().getUsersInfo(idList, new V2TIMValueCallback<List<V2TIMUserFullInfo>>() {
+            @Override
+            public void onSuccess(List<V2TIMUserFullInfo> v2TIMUserFullInfos) {
+                if (v2TIMUserFullInfos == null || v2TIMUserFullInfos.isEmpty()) {
+                    return;
+                }
+                try {
+                    int contactCount = contactList.size();
+                    int userInfoListCount = v2TIMUserFullInfos.size();
+                    for (int i = 0; i < contactCount; i++) {
+                        ContactItemBean contactInfo = contactList.get(i);
+                        for (int j = 0; j < userInfoListCount; j++) {
+                            if (!TextUtils.isEmpty(contactInfo.getId()) && contactInfo.getId().equals(v2TIMUserFullInfos.get(j).getUserID())) {
+                                contactInfo.setRole(v2TIMUserFullInfos.get(j).getRole());
+                                break;
+                            }
+                        }
+                    }
+                    mAdapter.setDataSource(contactList);
+                } catch (Exception e) {
+                    e.printStackTrace(System.err);
+                }
+            }
+
+            @Override
+            public void onError(int code, String desc) {
+
+            }
+        });
     }
 
     public void setSingleSelectMode(boolean mode) {

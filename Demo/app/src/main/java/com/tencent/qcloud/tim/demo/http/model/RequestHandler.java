@@ -25,6 +25,7 @@ import com.hjq.http.request.HttpRequest;
 import com.tencent.qcloud.tim.demo.R;
 import com.tencent.qcloud.tim.demo.http.exception.ResultException;
 import com.tencent.qcloud.tim.demo.http.exception.TokenException;
+import com.tencent.qcloud.tuikit.timcommon.model.HttpData;
 
 import java.io.IOException;
 import java.io.InputStream;

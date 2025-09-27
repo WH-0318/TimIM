@@ -3,6 +3,7 @@ package com.tencent.qcloud.tuikit.tuiconversation.presenter;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Pair;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.tencent.imsdk.v2.V2TIMConversation;
@@ -37,6 +38,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class ConversationPresenter {
     private static final String TAG = ConversationPresenter.class.getSimpleName();
@@ -124,6 +126,7 @@ public class ConversationPresenter {
 
             @Override
             public void onNewConversation(List<ConversationInfo> conversationList) {
+                Log.d("out", "=======onNewConversation==size=" + conversationList.size());
                 ConversationPresenter.this.onNewConversation(conversationList, false);
                 if (updateMarkedUnreadAndHiddenList(conversationList)) {
                     refreshUnreadCount();
@@ -132,6 +135,7 @@ public class ConversationPresenter {
 
             @Override
             public void onConversationChanged(List<ConversationInfo> conversationList) {
+                Log.d("out", "=======onConversationChanged==size=" + conversationList.size());
                 ConversationPresenter.this.onConversationChanged(conversationList);
                 if (updateMarkedUnreadAndHiddenList(conversationList)) {
                     refreshUnreadCount();
@@ -225,6 +229,10 @@ public class ConversationPresenter {
     public void reLoadConversation() {}
 
     protected void onLoadConversationCompleted(List<ConversationInfo> conversationInfoList) {
+        ConversationInfo customerServiceInfo = new ConversationInfo();
+        customerServiceInfo.setTitle("客服");
+        customerServiceInfo.setTop(true);
+        conversationInfoList.add(customerServiceInfo);
         onNewConversation(conversationInfoList, false);
         if (adapter != null) {
             adapter.onLoadingStateChanged(false);
@@ -415,7 +423,7 @@ public class ConversationPresenter {
             for (int i = 0; i < uiSourceInfoList.size(); i++) {
                 ConversationInfo cacheInfo = uiSourceInfoList.get(i);
 
-                if (cacheInfo.getConversationId().equals(update.getConversationId())) {
+                if (!TextUtils.isEmpty(cacheInfo.getConversationId()) && cacheInfo.getConversationId().equals(update.getConversationId())) {
                     if (update.getStatusType() == V2TIMUserStatus.V2TIM_USER_STATUS_UNKNOWN) {
                         update.setStatusType(cacheInfo.getStatusType());
                     }
@@ -486,7 +494,7 @@ public class ConversationPresenter {
             for (int i = 0; i < uiSourceInfoList.size(); i++) {
                 ConversationInfo cacheInfo = uiSourceInfoList.get(i);
 
-                if (cacheInfo.getConversationId().equals(update.getConversationId())) {
+                if (!TextUtils.isEmpty(cacheInfo.getConversationId()) && cacheInfo.getConversationId().equals(update.getConversationId())) {
                     if (update.getStatusType() == V2TIMUserStatus.V2TIM_USER_STATUS_UNKNOWN) {
                         update.setStatusType(cacheInfo.getStatusType());
                     }

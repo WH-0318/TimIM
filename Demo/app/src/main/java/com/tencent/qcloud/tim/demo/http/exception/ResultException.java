@@ -3,7 +3,7 @@ package com.tencent.qcloud.tim.demo.http.exception;
 import androidx.annotation.NonNull;
 
 import com.hjq.http.exception.HttpException;
-import com.tencent.qcloud.tim.demo.http.model.HttpData;
+import com.tencent.qcloud.tuikit.timcommon.model.HttpData;
 
 /**
  *    author : Android 轮子哥

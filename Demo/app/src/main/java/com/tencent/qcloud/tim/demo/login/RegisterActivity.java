@@ -1,19 +1,13 @@
 package com.tencent.qcloud.tim.demo.login;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.TextPaint;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.EditText;
@@ -23,14 +17,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.OnHttpListener;
 import com.tencent.qcloud.tim.demo.R;
 import com.tencent.qcloud.tim.demo.http.api.RegisterApi;
 import com.tencent.qcloud.tim.demo.http.api.SmsCodeApi;
-import com.tencent.qcloud.tim.demo.http.model.HttpData;
+import com.tencent.qcloud.tuikit.timcommon.model.HttpData;
 import com.tencent.qcloud.tim.demo.utils.BusinessHelper;
 import com.tencent.qcloud.tuikit.timcommon.component.activities.BaseLightActivity;
 import com.trtc.tuikit.common.util.ToastUtil;

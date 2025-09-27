@@ -11,6 +11,9 @@
         <activity
             android:name="com.tencent.qcloud.tuikit.tuiconversation.classicui.page.TUIFoldedConversationActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tencent.qcloud.tuikit.tuiconversation.classicui.page.CustomerServiceListActivity"
+            android:screenOrientation="portrait" />
         <!-- **************** Classic UI Activity End **************** -->
 
 

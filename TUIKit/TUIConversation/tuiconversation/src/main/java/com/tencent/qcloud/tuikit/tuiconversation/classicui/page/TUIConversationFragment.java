@@ -103,8 +103,10 @@ public class TUIConversationFragment extends Fragment {
                 if (conversationInfo.isMarkFold()) {
                     mConversationLayout.clearUnreadStatusOfFoldItem();
                     startFoldedConversationActivity();
-                } else {
+                } else if (!TextUtils.isEmpty(conversationInfo.getConversationId())){
                     TUIConversationUtils.startChatActivity(conversationInfo);
+                } else {
+                    startActivity(new Intent(getContext(), CustomerServiceListActivity.class));
                 }
             }
 

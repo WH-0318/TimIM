@@ -32,6 +32,7 @@ import com.tencent.qcloud.tuicore.TUICore;
 import com.tencent.qcloud.tuicore.TUIThemeManager;
 import com.tencent.qcloud.tuicore.interfaces.ITUINotification;
 import com.tencent.qcloud.tuicore.interfaces.ITUIObjectFactory;
+import com.tencent.qcloud.tuicore.util.SPUtils;
 import com.tencent.qcloud.tuikit.timcommon.util.TUIUtil;
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -182,9 +183,9 @@ public class DemoApplication extends MultiDexApplication {
                 // 设置请求重试时间
                 .setRetryTime(2000)
                 // 添加全局请求参数
-                //.addParam("token", "6666666")
+                //.addParam("xxx", "xxx")
                 // 添加全局请求头
-                //.addHeader("date", "20191030")
+                .addHeader("Authorization", SPUtils.getInstance().getString("token"))
                 .into();
     }
 }

@@ -415,7 +415,7 @@ public abstract class MessageContentHolder<T extends TUIMessageBean> extends Mes
             leftUserNameText.setTextSize(TUIConfigClassic.getReceiveNickNameFontSize());
         }
 
-        leftUserNameText.setText(msg.getUserDisplayName());
+        leftUserNameText.setText(msg.getUserDisplayNameWithRole());
     }
 
     private void setUserIcon(T msg) {

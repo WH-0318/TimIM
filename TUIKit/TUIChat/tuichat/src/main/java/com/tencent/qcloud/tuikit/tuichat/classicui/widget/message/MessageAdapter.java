@@ -1,5 +1,6 @@
 package com.tencent.qcloud.tuikit.tuichat.classicui.widget.message;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -7,6 +8,8 @@ import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.blankj.utilcode.util.CollectionUtils;
 import com.tencent.qcloud.tuicore.TUILogin;
 import com.tencent.qcloud.tuikit.timcommon.bean.TUIMessageBean;
 import com.tencent.qcloud.tuikit.timcommon.classicui.widget.message.MessageBaseHolder;
@@ -15,6 +18,7 @@ import com.tencent.qcloud.tuikit.timcommon.component.highlight.HighlightPresente
 import com.tencent.qcloud.tuikit.timcommon.interfaces.ICommonMessageAdapter;
 import com.tencent.qcloud.tuikit.timcommon.interfaces.OnItemClickListener;
 import com.tencent.qcloud.tuikit.timcommon.interfaces.UserFaceUrlCache;
+import com.tencent.qcloud.tuikit.tuichat.bean.GroupMemberInfo;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.TipsMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.classicui.ClassicUIService;
 import com.tencent.qcloud.tuikit.tuichat.classicui.widget.message.viewholder.MessageHeadHolder;
@@ -43,6 +47,7 @@ public class MessageAdapter extends RecyclerView.Adapter implements IMessageAdap
     private boolean isForwardMode = false;
     private boolean isReplyDetailMode = false;
 
+    private List<GroupMemberInfo> groupMemberList;
     private ChatPresenter presenter;
     private Fragment fragment;
     private UserFaceUrlCache faceUrlCache;
@@ -94,6 +99,11 @@ public class MessageAdapter extends RecyclerView.Adapter implements IMessageAdap
             return;
         }
         mSelectedPositions.put(messageBean.getId(), isChecked);
+    }
+
+    public void updateUserRole(List<GroupMemberInfo> groupMemberList) {
+        this.groupMemberList = groupMemberList;
+        updateRole();
     }
 
     private boolean isItemChecked(TUIMessageBean messageBean) {
@@ -422,6 +432,22 @@ public class MessageAdapter extends RecyclerView.Adapter implements IMessageAdap
     @Override
     public void onDataSourceChanged(List<TUIMessageBean> dataSource) {
         this.dataSource = dataSource;
+        updateRole();
+    }
+
+    private void updateRole() {
+        if (CollectionUtils.isEmpty(dataSource) || CollectionUtils.isEmpty(groupMemberList)) {
+            return;
+        }
+        for (TUIMessageBean msg: dataSource) {
+            for (GroupMemberInfo memberInfo: groupMemberList) {
+                if (!TextUtils.isEmpty(msg.getV2TIMMessage().getSender()) && msg.getV2TIMMessage().getSender().equals(memberInfo.getId())) {
+                    msg.setRole(memberInfo.getUserRole());
+                    break;
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     private int getMessagePosition(TUIMessageBean message) {

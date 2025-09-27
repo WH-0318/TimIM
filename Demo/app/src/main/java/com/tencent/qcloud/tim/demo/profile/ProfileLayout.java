@@ -369,10 +369,14 @@ public class ProfileLayout extends FrameLayout implements View.OnClickListener {
         int radius = getResources().getDimensionPixelSize(R.dimen.demo_profile_face_radius);
         GlideEngine.loadUserIcon(userIcon, mIconUrl, radius);
         mNickName = info.getNickName();
+        String roleName = "";
+        if (info.getRole() == 1) {
+            roleName = "[管理员]";
+        }
         if (TextUtils.isEmpty(mNickName)) {
-            nickNameView.setText(info.getUserID());
+            nickNameView.setText(info.getUserID() + roleName);
         } else {
-            nickNameView.setText(mNickName);
+            nickNameView.setText(mNickName + roleName);
         }
         accountView.setText(info.getUserID());
 

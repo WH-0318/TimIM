@@ -59,7 +59,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ContactAdapter.ViewHolder holder, final int position) {
         final ContactItemBean contactBean = mData.get(position);
-        holder.tvName.setText(contactBean.getDisplayName());
+        holder.tvName.setText(contactBean.getDisplayNameWithRole());
 
         if (mOnSelectChangedListener != null) {
             holder.ccSelect.setVisibility(View.VISIBLE);

@@ -37,6 +37,7 @@ public class ContactItemBean extends BaseIndexPinyinBean implements Comparable<C
     private int weight;
     private TUIExtensionEventListener extensionListener;
     private int unreadCount;
+    private int role;
 
     public ContactItemBean() {}
 
@@ -256,6 +257,14 @@ public class ContactItemBean extends BaseIndexPinyinBean implements Comparable<C
         }
     }
 
+    public String getDisplayNameWithRole() {
+        String roleName = "";
+        if (getRole() == 1) {
+            roleName = "[管理员]";
+        }
+        return getDisplayName() + roleName;
+    }
+
     @Override
     public int compareTo(ContactItemBean contactItemBean) {
         return contactItemBean.getWeight() - this.weight;
@@ -267,5 +276,13 @@ public class ContactItemBean extends BaseIndexPinyinBean implements Comparable<C
 
     public int getUnreadCount() {
         return unreadCount;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
     }
 }

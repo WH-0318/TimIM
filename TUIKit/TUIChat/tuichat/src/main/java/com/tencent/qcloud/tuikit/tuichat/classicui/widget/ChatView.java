@@ -31,8 +31,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.blankj.utilcode.util.CollectionUtils;
 import com.google.gson.Gson;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
+import com.tencent.imsdk.v2.V2TIMManager;
+import com.tencent.imsdk.v2.V2TIMUserFullInfo;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.qcloud.tuicore.TUIConstants;
 import com.tencent.qcloud.tuicore.TUICore;
 import com.tencent.qcloud.tuicore.TUIThemeManager;
@@ -54,6 +59,7 @@ import com.tencent.qcloud.tuikit.tuichat.TUIChatConstants;
 import com.tencent.qcloud.tuikit.tuichat.TUIChatService;
 import com.tencent.qcloud.tuikit.tuichat.bean.ChatInfo;
 import com.tencent.qcloud.tuikit.tuichat.bean.GroupApplyInfo;
+import com.tencent.qcloud.tuikit.tuichat.bean.GroupMemberInfo;
 import com.tencent.qcloud.tuikit.tuichat.bean.MessageTyping;
 import com.tencent.qcloud.tuikit.tuichat.bean.ReplyPreviewBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.CallingMessageBean;
@@ -75,6 +81,7 @@ import com.tencent.qcloud.tuikit.tuichat.config.classicui.TUIChatConfigClassic;
 import com.tencent.qcloud.tuikit.tuichat.interfaces.OnEmptySpaceClickListener;
 import com.tencent.qcloud.tuikit.tuichat.interfaces.OnGestureScrollListener;
 import com.tencent.qcloud.tuikit.tuichat.interfaces.TotalUnreadCountListener;
+import com.tencent.qcloud.tuikit.tuichat.model.ChatProvider;
 import com.tencent.qcloud.tuikit.tuichat.presenter.C2CChatPresenter;
 import com.tencent.qcloud.tuikit.tuichat.presenter.ChatPresenter;
 import com.tencent.qcloud.tuikit.tuichat.presenter.GroupChatPresenter;
@@ -83,6 +90,7 @@ import com.tencent.qcloud.tuikit.tuichat.util.TUIChatLog;
 import com.tencent.qcloud.tuikit.tuichat.util.TUIChatUtils;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -337,6 +345,66 @@ public class ChatView extends LinearLayout implements IChatLayout {
         });
     }
 
+    public void updateTitle(String userId, int chatType) {
+        if (!TUIChatUtils.isC2CChat(chatType)) {
+            return;
+        }
+        List<String> selfIdList = new ArrayList<>();
+        selfIdList.add(userId);
+        V2TIMManager.getInstance().getUsersInfo(selfIdList, new V2TIMValueCallback<List<V2TIMUserFullInfo>>() {
+            @Override
+            public void onSuccess(List<V2TIMUserFullInfo> v2TIMUserFullInfos) {
+                if (v2TIMUserFullInfos == null || v2TIMUserFullInfos.size() == 0) {
+                    return;
+                }
+
+                String roleName = "";
+                if (v2TIMUserFullInfos.get(0).getRole() == 1) {
+                    roleName = "[管理员]";
+                }
+                if (!TextUtils.isEmpty(roleName)) {
+                    String originTitle = getTitleBar().getMiddleTitle().getText().toString();
+                    getTitleBar().setTitle(originTitle + roleName, ITitleBarLayout.Position.MIDDLE);
+                }
+            }
+
+            @Override
+            public void onError(int code, String desc) {
+
+            }
+        });
+    }
+
+    public void updateMemberInfo(String userId, int chatType) {
+        if (!TUIChatUtils.isC2CChat(chatType)) {
+            return;
+        }
+        List<String> selfIdList = new ArrayList<>();
+        selfIdList.add(userId);
+        V2TIMManager.getInstance().getUsersInfo(selfIdList, new V2TIMValueCallback<List<V2TIMUserFullInfo>>() {
+            @Override
+            public void onSuccess(List<V2TIMUserFullInfo> v2TIMUserFullInfos) {
+                if (v2TIMUserFullInfos == null || v2TIMUserFullInfos.size() == 0) {
+                    return;
+                }
+
+                String roleName = "";
+                if (v2TIMUserFullInfos.get(0).getRole() == 1) {
+                    roleName = "[管理员]";
+                }
+                if (!TextUtils.isEmpty(roleName)) {
+                    String originTitle = getTitleBar().getMiddleTitle().getText().toString();
+                    getTitleBar().setTitle(originTitle + roleName, ITitleBarLayout.Position.MIDDLE);
+                }
+            }
+
+            @Override
+            public void onError(int code, String desc) {
+
+            }
+        });
+    }
+
     private void locateOriginMessage(String originMsgId) {
         if (TextUtils.isEmpty(originMsgId)) {
             ToastUtil.toastShortMessage(getContext().getString(R.string.locate_origin_msg_failed_tip));
@@ -455,6 +523,58 @@ public class ChatView extends LinearLayout implements IChatLayout {
         initExtension();
         initChatbot();
         setShortcutView();
+        if (chatInfo.getType() == ChatInfo.TYPE_GROUP) {
+            loadGroupInfo(chatInfo.getId());
+        }
+    }
+
+    public void loadGroupInfo(String groupId) {
+        GroupChatPresenter chatProvider = new GroupChatPresenter();
+        chatProvider.loadGroupMembers(groupId, new IUIKitCallback<>() {
+            @Override
+            public void onSuccess(List<GroupMemberInfo> data) {
+                super.onSuccess(data);
+                updateUserRole(data);
+            }
+        });
+    }
+
+    private void updateUserRole(List<GroupMemberInfo> groupMemberList) {
+        if (CollectionUtils.isEmpty(groupMemberList)) {
+            return;
+        }
+        List<String> idList = new ArrayList<>();
+        for (GroupMemberInfo item: groupMemberList) {
+            idList.add(item.getId());
+        }
+        V2TIMManager.getInstance().getUsersInfo(idList, new V2TIMValueCallback<List<V2TIMUserFullInfo>>() {
+            @Override
+            public void onSuccess(List<V2TIMUserFullInfo> v2TIMUserFullInfos) {
+                if (v2TIMUserFullInfos == null || v2TIMUserFullInfos.isEmpty()) {
+                    return;
+                }
+                try {
+                    int memberCount = groupMemberList.size();
+                    int userInfoListCount = v2TIMUserFullInfos.size();
+                    for (int i = 0; i < memberCount; i++) {
+                        GroupMemberInfo memberInfo = groupMemberList.get(i);
+                        for (int j = 0; j < userInfoListCount; j++) {
+                            if (!TextUtils.isEmpty(memberInfo.getId()) && memberInfo.getId().equals(v2TIMUserFullInfos.get(j).getUserID())) {
+                                memberInfo.setUserRole(v2TIMUserFullInfos.get(j).getRole());
+                                break;
+                            }
+                        }
+                    }
+                    mAdapter.updateUserRole(groupMemberList);
+                } catch (Exception e) {
+                    e.printStackTrace(System.err);
+                }
+            }
+
+            @Override
+            public void onError(int code, String desc) {
+            }
+        });
     }
 
     private void initExtension() {
@@ -541,17 +661,20 @@ public class ChatView extends LinearLayout implements IChatLayout {
     private void setChatName() {
         if (!TextUtils.isEmpty(mChatInfo.getChatName())) {
             getTitleBar().setTitle(mChatInfo.getChatName(), ITitleBarLayout.Position.MIDDLE);
+            updateTitle(mChatInfo.getId(), mChatInfo.getType());
         } else {
             presenter.getChatName(mChatInfo.getId(), new IUIKitCallback<String>() {
                 @Override
                 public void onSuccess(String data) {
                     mChatInfo.setChatName(data);
                     getTitleBar().setTitle(mChatInfo.getChatName(), ITitleBarLayout.Position.MIDDLE);
+                    updateTitle(mChatInfo.getId(), mChatInfo.getType());
                 }
 
                 @Override
                 public void onError(String module, int errCode, String errMsg) {
                     getTitleBar().setTitle(mChatInfo.getId(), ITitleBarLayout.Position.MIDDLE);
+                    updateTitle(mChatInfo.getId(), mChatInfo.getType());
                 }
             });
         }

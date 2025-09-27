@@ -1,6 +1,7 @@
 package com.tencent.qcloud.tuikit.tuicontact.classicui.widget;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.CollectionUtils;
+import com.tencent.imsdk.v2.V2TIMManager;
+import com.tencent.imsdk.v2.V2TIMUserFullInfo;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.qcloud.tuicore.TUIConstants;
 import com.tencent.qcloud.tuicore.TUICore;
 import com.tencent.qcloud.tuicore.util.ToastUtil;
@@ -86,7 +91,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
     public void onBindViewHolder(@NonNull GroupMemberViewHodler holder, int position) {
         final GroupMemberInfo info = mGroupMembers.get(position);
         GlideEngine.loadImage(holder.memberIcon, info.getFaceUrl());
-        holder.memberName.setText(info.getDisplayName());
+        holder.memberName.setText(info.getDisplayNameWithRole());
 
         if (isSelectMode) {
             holder.checkBox.setVisibility(View.VISIBLE);
@@ -208,7 +213,47 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
                     notifyDataSetChanged();
                 }
             });
+            updateGroupMemberInfo(mGroupMembers);
         }
+    }
+
+    public void updateGroupMemberInfo(List<GroupMemberInfo> groupMemberList) {
+        if (CollectionUtils.isEmpty(groupMemberList)) {
+            return;
+        }
+        List<String> idList = new ArrayList<>();
+        for (GroupMemberInfo item: groupMemberList) {
+            idList.add(item.getUserId());
+        }
+        V2TIMManager.getInstance().getUsersInfo(idList, new V2TIMValueCallback<List<V2TIMUserFullInfo>>() {
+            @Override
+            public void onSuccess(List<V2TIMUserFullInfo> v2TIMUserFullInfos) {
+                if (v2TIMUserFullInfos == null || v2TIMUserFullInfos.isEmpty()) {
+                    return;
+                }
+                try {
+                    int contactCount = groupMemberList.size();
+                    int userInfoListCount = v2TIMUserFullInfos.size();
+                    for (int i = 0; i < contactCount; i++) {
+                        GroupMemberInfo contactInfo = groupMemberList.get(i);
+                        for (int j = 0; j < userInfoListCount; j++) {
+                            if (!TextUtils.isEmpty(contactInfo.getUserId()) && contactInfo.getUserId().equals(v2TIMUserFullInfos.get(j).getUserID())) {
+                                contactInfo.setRole(v2TIMUserFullInfos.get(j).getRole());
+                                break;
+                            }
+                        }
+                    }
+                    notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace(System.err);
+                }
+            }
+
+            @Override
+            public void onError(int code, String desc) {
+
+            }
+        });
     }
 
     protected class GroupMemberViewHodler extends RecyclerView.ViewHolder {

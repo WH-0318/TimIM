@@ -17,6 +17,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.tencent.imsdk.v2.V2TIMConversation;
+import com.tencent.imsdk.v2.V2TIMManager;
+import com.tencent.imsdk.v2.V2TIMUserFullInfo;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.qcloud.tuicore.TUIConstants;
 import com.tencent.qcloud.tuicore.TUICore;
 import com.tencent.qcloud.tuicore.interfaces.TUIExtensionEventListener;
@@ -200,9 +203,34 @@ public class FriendProfileLayout extends LinearLayout {
         mNickNameView.setText(friendProfileBean.getDisplayName());
         mIDView.setText(friendProfileBean.getUserId());
 
+        loadUserInfo(friendProfileBean.getUserId());
         setOnClickListener();
         setupExtension();
         applyCustomConfig();
+    }
+
+    public void loadUserInfo(String userId) {
+        List<String> selfIdList = new ArrayList<>();
+        selfIdList.add(userId);
+        V2TIMManager.getInstance().getUsersInfo(selfIdList, new V2TIMValueCallback<List<V2TIMUserFullInfo>>() {
+            @Override
+            public void onSuccess(List<V2TIMUserFullInfo> v2TIMUserFullInfos) {
+                if (v2TIMUserFullInfos == null || v2TIMUserFullInfos.size() == 0) {
+                    return;
+                }
+
+                String roleName = "";
+                if (v2TIMUserFullInfos.get(0).getRole() == 1) {
+                    roleName = "[管理员]";
+                }
+                mNickNameView.setText(mNickNameView.getText() + roleName);
+            }
+
+            @Override
+            public void onError(int code, String desc) {
+
+            }
+        });
     }
 
     private void setupExtension() {

@@ -22,10 +22,30 @@ public class GroupMemberInfo implements Serializable {
     private String nickName;
     private boolean isTopChat;
     private boolean isFriend;
+
+    public int getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(int userRole) {
+        this.userRole = userRole;
+    }
+
     private long joinTime;
     private long tinyId;
     private int memberType;
     private int role;
+    private int userRole;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    private String id;
 
     public String getIconUrl() {
         return iconUrl;
@@ -109,6 +129,7 @@ public class GroupMemberInfo implements Serializable {
     public GroupMemberInfo covertTIMGroupMemberInfo(V2TIMGroupMemberInfo info) {
         if (info instanceof V2TIMGroupMemberFullInfo) {
             V2TIMGroupMemberFullInfo v2TIMGroupMemberFullInfo = (V2TIMGroupMemberFullInfo) info;
+            setId(v2TIMGroupMemberFullInfo.getUserID());
             setJoinTime(v2TIMGroupMemberFullInfo.getJoinTime());
             setMemberType(v2TIMGroupMemberFullInfo.getRole());
             setRole(v2TIMGroupMemberFullInfo.getRole());

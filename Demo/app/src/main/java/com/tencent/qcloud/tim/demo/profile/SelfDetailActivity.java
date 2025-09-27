@@ -108,8 +108,12 @@ public class SelfDetailActivity extends BaseLightActivity implements View.OnClic
         faceUrl = info.getFaceUrl();
         int radius = getResources().getDimensionPixelSize(R.dimen.demo_profile_face_radius);
         GlideEngine.loadUserIcon(selfIcon, faceUrl, radius);
+        String roleName = "";
+        if (info.getRole() == 1) {
+            roleName = "[管理员]";
+        }
         nickName = info.getNickName();
-        nickNameLv.setContent(nickName);
+        nickNameLv.setContent(nickName + roleName);
         birthday = info.getBirthday();
         String birthdayStr = String.valueOf(info.getBirthday());
         if (TextUtils.isEmpty(birthdayStr) || birthdayStr.length() < 8) {

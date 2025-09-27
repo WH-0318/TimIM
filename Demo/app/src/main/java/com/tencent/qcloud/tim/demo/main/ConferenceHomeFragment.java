@@ -55,7 +55,7 @@ public class ConferenceHomeFragment extends Fragment {
                 .request(new OnHttpListener<HttpData<UserInfoApi.Bean>>() {
                     @Override
                     public void onHttpSuccess(@NonNull HttpData<UserInfoApi.Bean> result) {
-                        updateLayout(!result.getData().isAdmin());
+                        updateLayout(result.getData().isAdmin());
                     }
 
                     @Override

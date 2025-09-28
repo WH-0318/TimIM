@@ -1,4 +1,4 @@
-package com.tencent.qcloud.tim.demo.http.api;
+package com.tencent.qcloud.tuikit.tuiconversation.api;
 
 import androidx.annotation.NonNull;
 

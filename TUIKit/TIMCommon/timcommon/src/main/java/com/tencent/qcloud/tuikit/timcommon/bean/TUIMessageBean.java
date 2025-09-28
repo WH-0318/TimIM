@@ -296,14 +296,6 @@ public abstract class TUIMessageBean implements Serializable {
         return displayName;
     }
 
-    public String getUserDisplayNameWithRole() {
-        String roleName = "";
-        if (getRole() == 1) {
-            roleName = "[管理员]";
-        }
-        return getUserDisplayName() + roleName;
-    }
-
     public String getFaceUrl() {
         if (v2TIMMessage != null) {
             return v2TIMMessage.getFaceUrl();

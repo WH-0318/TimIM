@@ -85,6 +85,10 @@ public class LineControllerView extends RelativeLayout {
         return mContentText.getText().toString();
     }
 
+    public TextView getContentView() {
+        return mContentText;
+    }
+
     public void setContent(String content) {
         this.mContent = content;
         mContentText.setText(content);

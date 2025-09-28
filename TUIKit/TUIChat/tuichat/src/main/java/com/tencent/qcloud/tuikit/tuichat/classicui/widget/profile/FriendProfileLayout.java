@@ -31,6 +31,7 @@ import com.tencent.qcloud.tuikit.timcommon.component.TitleBarLayout;
 import com.tencent.qcloud.tuikit.timcommon.component.dialog.TUIKitDialog;
 import com.tencent.qcloud.tuikit.timcommon.component.impl.GlideEngine;
 import com.tencent.qcloud.tuikit.timcommon.component.interfaces.ITitleBarLayout;
+import com.tencent.qcloud.tuikit.timcommon.util.BusinessHelper;
 import com.tencent.qcloud.tuikit.timcommon.util.ScreenUtil;
 import com.tencent.qcloud.tuikit.timcommon.util.TIMCommonUtil;
 import com.tencent.qcloud.tuikit.tuichat.R;
@@ -219,11 +220,7 @@ public class FriendProfileLayout extends LinearLayout {
                     return;
                 }
 
-                String roleName = "";
-                if (v2TIMUserFullInfos.get(0).getRole() == 1) {
-                    roleName = "[管理员]";
-                }
-                mNickNameView.setText(mNickNameView.getText() + roleName);
+                BusinessHelper.setDisplayNameWithRole(mNickNameView, mNickNameView.getText().toString(), v2TIMUserFullInfos.get(0).getRole());
             }
 
             @Override

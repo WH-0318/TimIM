@@ -179,7 +179,7 @@ public class ConversationFoldPresenter {
             for (int i = 0; i < loadedConversationInfoList.size(); i++) {
                 ConversationInfo cacheInfo = loadedConversationInfoList.get(i);
                 
-                if (cacheInfo.getConversationId().equals(update.getConversationId())) {
+                if (!TextUtils.isEmpty(cacheInfo.getConversationId()) && cacheInfo.getConversationId().equals(update.getConversationId())) {
                     loadedConversationInfoList.set(i, update);
                     iterator.remove();
                     exists.add(update);
@@ -253,7 +253,7 @@ public class ConversationFoldPresenter {
             for (int i = 0; i < uiSourceInfoList.size(); i++) {
                 ConversationInfo cacheInfo = uiSourceInfoList.get(i);
                 
-                if (cacheInfo.getConversationId().equals(update.getConversationId())) {
+                if (!TextUtils.isEmpty(cacheInfo.getConversationId()) && cacheInfo.getConversationId().equals(update.getConversationId())) {
                     if (update.getStatusType() == V2TIMUserStatus.V2TIM_USER_STATUS_UNKNOWN) {
                         update.setStatusType(cacheInfo.getStatusType());
                     }

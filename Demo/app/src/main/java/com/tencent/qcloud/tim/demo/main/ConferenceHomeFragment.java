@@ -15,9 +15,8 @@ import com.blankj.utilcode.util.SizeUtils;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.OnHttpListener;
 import com.tencent.cloud.tuikit.roomkit.view.basic.PrepareView;
-import com.tencent.qcloud.tim.demo.http.api.UserInfoApi;
+import com.tencent.qcloud.tuikit.tuiconversation.api.UserInfoApi;
 import com.tencent.qcloud.tuikit.timcommon.model.HttpData;
-import com.trtc.tuikit.common.util.ScreenUtil;
 
 public class ConferenceHomeFragment extends Fragment {
 
@@ -55,7 +54,7 @@ public class ConferenceHomeFragment extends Fragment {
                 .request(new OnHttpListener<HttpData<UserInfoApi.Bean>>() {
                     @Override
                     public void onHttpSuccess(@NonNull HttpData<UserInfoApi.Bean> result) {
-                        updateLayout(result.getData().isAdmin());
+                        updateLayout(result.getData() != null && result.getData().isAdmin());
                     }
 
                     @Override

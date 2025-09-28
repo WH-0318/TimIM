@@ -51,16 +51,4 @@ public class GroupMemberInfo extends UserBean implements Serializable {
         setNickName(info.getNickName());
         return this;
     }
-
-    public String getDisplayNameWithRole() {
-        String roleName = "";
-        if (getRole() == 1) {
-            roleName = "管理员";
-        }
-        if (!TextUtils.isEmpty(roleName)) {
-            return getDisplayName() + "[" + roleName + "]";
-        } else {
-            return getDisplayName();
-        }
-    }
 }

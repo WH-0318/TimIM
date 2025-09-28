@@ -22,6 +22,7 @@ import com.tencent.qcloud.tuicore.TUICore;
 import com.tencent.qcloud.tuicore.util.ToastUtil;
 import com.tencent.qcloud.tuikit.timcommon.component.impl.GlideEngine;
 import com.tencent.qcloud.tuikit.timcommon.component.interfaces.IUIKitCallback;
+import com.tencent.qcloud.tuikit.timcommon.util.BusinessHelper;
 import com.tencent.qcloud.tuikit.timcommon.util.PopWindowUtil;
 import com.tencent.qcloud.tuikit.timcommon.util.ScreenUtil;
 import com.tencent.qcloud.tuikit.timcommon.util.ThreadUtils;
@@ -91,8 +92,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
     public void onBindViewHolder(@NonNull GroupMemberViewHodler holder, int position) {
         final GroupMemberInfo info = mGroupMembers.get(position);
         GlideEngine.loadImage(holder.memberIcon, info.getFaceUrl());
-        holder.memberName.setText(info.getDisplayNameWithRole());
-
+        BusinessHelper.setDisplayNameWithRole(holder.memberName, info.getDisplayName(), info.getRole());
         if (isSelectMode) {
             holder.checkBox.setVisibility(View.VISIBLE);
             holder.checkBox.setChecked(info.isSelected());

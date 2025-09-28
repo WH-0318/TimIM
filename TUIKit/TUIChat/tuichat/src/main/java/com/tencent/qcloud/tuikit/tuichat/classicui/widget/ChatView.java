@@ -52,6 +52,7 @@ import com.tencent.qcloud.tuikit.timcommon.component.interfaces.ITitleBarLayout;
 import com.tencent.qcloud.tuikit.timcommon.component.interfaces.IUIKitCallback;
 import com.tencent.qcloud.tuikit.timcommon.interfaces.ChatInputMoreListener;
 import com.tencent.qcloud.tuikit.timcommon.interfaces.OnChatPopActionClickListener;
+import com.tencent.qcloud.tuikit.timcommon.util.BusinessHelper;
 import com.tencent.qcloud.tuikit.timcommon.util.TIMCommonUtil;
 import com.tencent.qcloud.tuikit.timcommon.util.ThreadUtils;
 import com.tencent.qcloud.tuikit.tuichat.R;
@@ -357,15 +358,11 @@ public class ChatView extends LinearLayout implements IChatLayout {
                 if (v2TIMUserFullInfos == null || v2TIMUserFullInfos.size() == 0) {
                     return;
                 }
-
-                String roleName = "";
-                if (v2TIMUserFullInfos.get(0).getRole() == 1) {
-                    roleName = "[管理员]";
-                }
-                if (!TextUtils.isEmpty(roleName)) {
-                    String originTitle = getTitleBar().getMiddleTitle().getText().toString();
-                    getTitleBar().setTitle(originTitle + roleName, ITitleBarLayout.Position.MIDDLE);
-                }
+                BusinessHelper.setDisplayNameWithRole(
+                        getTitleBar().getMiddleTitle(),
+                        getTitleBar().getMiddleTitle().getText().toString(),
+                        v2TIMUserFullInfos.get(0).getRole()
+                );
             }
 
             @Override
@@ -388,14 +385,7 @@ public class ChatView extends LinearLayout implements IChatLayout {
                     return;
                 }
 
-                String roleName = "";
-                if (v2TIMUserFullInfos.get(0).getRole() == 1) {
-                    roleName = "[管理员]";
-                }
-                if (!TextUtils.isEmpty(roleName)) {
-                    String originTitle = getTitleBar().getMiddleTitle().getText().toString();
-                    getTitleBar().setTitle(originTitle + roleName, ITitleBarLayout.Position.MIDDLE);
-                }
+                BusinessHelper.setDisplayNameWithRole(getTitleBar().getMiddleTitle(), getTitleBar().getMiddleTitle().getText().toString(), v2TIMUserFullInfos.get(0).getRole());
             }
 
             @Override

@@ -186,7 +186,8 @@ public class ContactPresenter {
                 dataSource.add(newContacts);
                 dataSource.add(groupChats);
                 dataSource.add(blackList);
-                dataSource.addAll(getExtensionControllerMoreList());
+                // remove customer service entry.
+                //dataSource.addAll(getExtensionControllerMoreList());
                 provider.loadFriendListDataAsync(callback);
                 getFriendApplicationUnReadCount();
                 break;

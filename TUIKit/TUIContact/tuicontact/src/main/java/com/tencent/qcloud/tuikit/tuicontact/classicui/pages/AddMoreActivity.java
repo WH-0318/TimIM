@@ -9,8 +9,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.hjq.http.EasyHttp;
+import com.hjq.http.listener.OnHttpListener;
 import com.tencent.qcloud.tuicore.TUIConstants;
 import com.tencent.qcloud.tuicore.TUILogin;
 import com.tencent.qcloud.tuicore.interfaces.TUIValueCallback;
@@ -19,9 +23,11 @@ import com.tencent.qcloud.tuikit.timcommon.component.activities.BaseLightActivit
 import com.tencent.qcloud.tuikit.timcommon.component.impl.GlideEngine;
 import com.tencent.qcloud.tuikit.timcommon.component.interfaces.ITitleBarLayout;
 import com.tencent.qcloud.tuikit.timcommon.component.interfaces.IUIKitCallback;
+import com.tencent.qcloud.tuikit.timcommon.model.HttpData;
 import com.tencent.qcloud.tuikit.timcommon.util.TUIUtil;
 import com.tencent.qcloud.tuikit.tuicontact.R;
 import com.tencent.qcloud.tuikit.tuicontact.TUIContactConstants;
+import com.tencent.qcloud.tuikit.tuicontact.api.FriendInfoApi;
 import com.tencent.qcloud.tuikit.tuicontact.bean.ContactItemBean;
 import com.tencent.qcloud.tuikit.tuicontact.bean.GroupInfo;
 import com.tencent.qcloud.tuikit.tuicontact.classicui.util.ClassicUIUtils;
@@ -87,55 +93,8 @@ public class AddMoreActivity extends BaseLightActivity implements IAddMoreActivi
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notFoundTip.setVisibility(View.GONE);
                 String id = searchEdit.getText().toString();
-
-                if (mIsGroup) {
-                    presenter.getGroupInfo(id, new IUIKitCallback<GroupInfo>() {
-                        @Override
-                        public void onSuccess(GroupInfo data) {
-                            setGroupDetail(data);
-                            detailArea.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent intent = new Intent(AddMoreActivity.this, AddMoreDetailActivity.class);
-                                    intent.putExtra(TUIConstants.TUIContact.CONTENT, data);
-                                    startActivity(intent);
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onError(String module, int errCode, String errMsg) {
-                            setNotFound(true);
-                        }
-                    });
-                    return;
-                }
-
-                presenter.getUserInfo(id, new TUIValueCallback<ContactItemBean>() {
-                    @Override
-                    public void onSuccess(ContactItemBean data) {
-                        setFriendDetail(data.getAvatarUrl(), data.getId(), data.getNickName());
-                        detailArea.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (data.isFriend()) {
-                                    ClassicUIUtils.showContactDetails(data.getId());
-                                } else {
-                                    Intent intent = new Intent(AddMoreActivity.this, AddMoreDetailActivity.class);
-                                    intent.putExtra(TUIConstants.TUIContact.CONTENT, data);
-                                    startActivity(intent);
-                                }
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onError(int errCode, String errMsg) {
-                        setNotFound(false);
-                    }
-                });
+                searchUserInfoById(id);
             }
         });
 
@@ -165,6 +124,79 @@ public class AddMoreActivity extends BaseLightActivity implements IAddMoreActivi
                     detailArea.setVisibility(View.GONE);
                     notFoundTip.setVisibility(View.GONE);
                 }
+            }
+        });
+    }
+
+    private void searchUserInfoById(String id) {
+        if (TextUtils.isEmpty(id)) {
+            return;
+        }
+        EasyHttp.post(this)
+                .api(new FriendInfoApi().setId(id))
+                .request(new OnHttpListener<HttpData<FriendInfoApi.Bean>>() {
+                    @Override
+                    public void onHttpSuccess(@NonNull HttpData<FriendInfoApi.Bean> result) {
+                        if (result.getData() != null) {
+                            realSearchUserInfoById(result.getData().getId());
+                        } else {
+                            realSearchUserInfoById(id);
+                        }
+                    }
+
+                    @Override
+                    public void onHttpFail(@NonNull Throwable throwable) {
+                        realSearchUserInfoById(id);
+                    }
+                });
+    }
+
+    private void realSearchUserInfoById(String id) {
+        notFoundTip.setVisibility(View.GONE);
+        if (mIsGroup) {
+            presenter.getGroupInfo(id, new IUIKitCallback<GroupInfo>() {
+                @Override
+                public void onSuccess(GroupInfo data) {
+                    setGroupDetail(data);
+                    detailArea.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(AddMoreActivity.this, AddMoreDetailActivity.class);
+                            intent.putExtra(TUIConstants.TUIContact.CONTENT, data);
+                            startActivity(intent);
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(String module, int errCode, String errMsg) {
+                    setNotFound(true);
+                }
+            });
+            return;
+        }
+
+        presenter.getUserInfo(id, new TUIValueCallback<ContactItemBean>() {
+            @Override
+            public void onSuccess(ContactItemBean data) {
+                setFriendDetail(data.getAvatarUrl(), data.getId(), data.getNickName());
+                detailArea.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (data.isFriend()) {
+                            ClassicUIUtils.showContactDetails(data.getId());
+                        } else {
+                            Intent intent = new Intent(AddMoreActivity.this, AddMoreDetailActivity.class);
+                            intent.putExtra(TUIConstants.TUIContact.CONTENT, data);
+                            startActivity(intent);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onError(int errCode, String errMsg) {
+                setNotFound(false);
             }
         });
     }

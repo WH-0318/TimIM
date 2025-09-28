@@ -16,6 +16,7 @@ public final class CustomerServiceInfoApi implements IRequestApi {
         private String id;
         private String avatar;
         private String nickName;
+        private int role;
 
         public String getId() {
             return id;
@@ -39,6 +40,14 @@ public final class CustomerServiceInfoApi implements IRequestApi {
 
         public void setNickName(String nickName) {
             this.nickName = nickName;
+        }
+
+        public int getRole() {
+            return role;
+        }
+
+        public void setRole(int role) {
+            this.role = role;
         }
     }
 

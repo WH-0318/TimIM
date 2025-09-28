@@ -5,10 +5,19 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
+
+import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.hjq.http.EasyHttp;
+import com.hjq.http.lifecycle.ApplicationLifecycle;
+import com.hjq.http.listener.OnHttpListener;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMConversationListFilter;
+import com.tencent.imsdk.v2.V2TIMManager;
+import com.tencent.imsdk.v2.V2TIMUserFullInfo;
 import com.tencent.imsdk.v2.V2TIMUserStatus;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.qcloud.tuicore.TUIConstants;
 import com.tencent.qcloud.tuicore.TUICore;
 import com.tencent.qcloud.tuicore.TUILogin;
@@ -18,10 +27,12 @@ import com.tencent.qcloud.tuikit.timcommon.bean.TUIMessageBean;
 import com.tencent.qcloud.tuikit.timcommon.bean.UserBean;
 import com.tencent.qcloud.tuikit.timcommon.component.face.FaceManager;
 import com.tencent.qcloud.tuikit.timcommon.component.interfaces.IUIKitCallback;
+import com.tencent.qcloud.tuikit.timcommon.model.HttpData;
 import com.tencent.qcloud.tuikit.timcommon.util.TIMCommonUtil;
 import com.tencent.qcloud.tuikit.timcommon.util.ThreadUtils;
 import com.tencent.qcloud.tuikit.tuiconversation.TUIConversationConstants;
 import com.tencent.qcloud.tuikit.tuiconversation.TUIConversationService;
+import com.tencent.qcloud.tuikit.tuiconversation.api.UserInfoApi;
 import com.tencent.qcloud.tuikit.tuiconversation.bean.ConversationGroupBean;
 import com.tencent.qcloud.tuikit.tuiconversation.bean.ConversationInfo;
 import com.tencent.qcloud.tuikit.tuiconversation.bean.ConversationUserStatusBean;
@@ -229,6 +240,34 @@ public class ConversationPresenter {
     public void reLoadConversation() {}
 
     protected void onLoadConversationCompleted(List<ConversationInfo> conversationInfoList) {
+        addCustomerService(conversationInfoList);
+        updateUserRole(conversationInfoList);
+        onNewConversation(conversationInfoList, false);
+        if (adapter != null) {
+            adapter.onLoadingStateChanged(false);
+            adapter.onViewNeedRefresh();
+        }
+    }
+
+    private void addCustomerService(List<ConversationInfo> conversationInfoList) {
+        EasyHttp.post(ApplicationLifecycle.getInstance())
+                .api(new UserInfoApi())
+                .request(new OnHttpListener<HttpData<UserInfoApi.Bean>>() {
+                    @Override
+                    public void onHttpSuccess(@NonNull HttpData<UserInfoApi.Bean> result) {
+                        if (result.getData() != null && !result.getData().isAdmin()) {
+                            realAddCustomerService(conversationInfoList);
+                        }
+                    }
+
+                    @Override
+                    public void onHttpFail(@NonNull Throwable throwable) {
+
+                    }
+                });
+    }
+
+    private void realAddCustomerService(List<ConversationInfo> conversationInfoList) {
         ConversationInfo customerServiceInfo = new ConversationInfo();
         customerServiceInfo.setTitle("客服");
         customerServiceInfo.setTop(true);
@@ -238,6 +277,56 @@ public class ConversationPresenter {
             adapter.onLoadingStateChanged(false);
             adapter.onViewNeedRefresh();
         }
+    }
+
+    private void updateUserRole(List<ConversationInfo> conversationInfoList) {
+        List<ConversationInfo> c2cConversationList = new ArrayList<>();
+        for (ConversationInfo conversationInfo: conversationInfoList) {
+            if (!conversationInfo.isGroup()) {
+                c2cConversationList.add(conversationInfo);
+            }
+        }
+        if (c2cConversationList.isEmpty()) {
+            return;
+        }
+
+        List<String> idList = new ArrayList<>();
+        for (ConversationInfo item: c2cConversationList) {
+            idList.add(item.getId());
+        }
+        V2TIMManager.getInstance().getUsersInfo(idList, new V2TIMValueCallback<List<V2TIMUserFullInfo>>() {
+            @Override
+            public void onSuccess(List<V2TIMUserFullInfo> v2TIMUserFullInfos) {
+                if (v2TIMUserFullInfos == null || v2TIMUserFullInfos.isEmpty()) {
+                    return;
+                }
+                try {
+                    int privateChatCount = c2cConversationList.size();
+                    int userInfoListCount = v2TIMUserFullInfos.size();
+                    for (int i = 0; i < privateChatCount; i++) {
+                        ConversationInfo conversationInfo = c2cConversationList.get(i);
+                        for (int j = 0; j < userInfoListCount; j++) {
+                            if (!TextUtils.isEmpty(conversationInfo.getId()) && conversationInfo.getId().equals(v2TIMUserFullInfos.get(j).getUserID())) {
+                                conversationInfo.setRole(v2TIMUserFullInfos.get(j).getRole());
+                                break;
+                            }
+                        }
+                    }
+
+                    if (adapter != null) {
+                        adapter.onLoadingStateChanged(false);
+                        adapter.onViewNeedRefresh();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace(System.err);
+                }
+            }
+
+            @Override
+            public void onError(int code, String desc) {
+
+            }
+        });
     }
 
     protected void refreshUnreadCount() {
@@ -1160,7 +1249,7 @@ public class ConversationPresenter {
         ConversationInfo conversationInfo = null;
         for (int i = 0; i < loadedConversationInfoList.size(); i++) {
             ConversationInfo info = loadedConversationInfoList.get(i);
-            if (info.getConversationId().equals(conversationId)) {
+            if (!TextUtils.isEmpty(info.getConversationId()) && info.getConversationId().equals(conversationId)) {
                 conversationInfo = info;
                 break;
             }
@@ -1305,7 +1394,7 @@ public class ConversationPresenter {
     private void deleteConversationById(String conversationId) {
         for (int i = 0; i < loadedConversationInfoList.size(); i++) {
             ConversationInfo info = loadedConversationInfoList.get(i);
-            if (info.getConversationId().equals(conversationId)) {
+            if (!TextUtils.isEmpty(info.getConversationId()) && info.getConversationId().equals(conversationId)) {
                 loadedConversationInfoList.remove(i);
                 if (adapter != null) {
                     adapter.onItemRemoved(i);

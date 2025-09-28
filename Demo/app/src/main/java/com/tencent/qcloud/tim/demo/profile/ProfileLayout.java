@@ -44,6 +44,7 @@ import com.tencent.qcloud.tuikit.timcommon.component.LineControllerView;
 import com.tencent.qcloud.tuikit.timcommon.component.activities.SelectionActivity;
 import com.tencent.qcloud.tuikit.timcommon.component.gatherimage.ShadeImageView;
 import com.tencent.qcloud.tuikit.timcommon.component.impl.GlideEngine;
+import com.tencent.qcloud.tuikit.timcommon.util.BusinessHelper;
 import com.tencent.qcloud.tuikit.tuichat.config.TUIChatConfigs;
 import com.tencent.qcloud.tuikit.tuicontact.TUIContactService;
 import com.tencent.qcloud.tuikit.tuicontact.config.TUIContactConfig;
@@ -369,15 +370,7 @@ public class ProfileLayout extends FrameLayout implements View.OnClickListener {
         int radius = getResources().getDimensionPixelSize(R.dimen.demo_profile_face_radius);
         GlideEngine.loadUserIcon(userIcon, mIconUrl, radius);
         mNickName = info.getNickName();
-        String roleName = "";
-        if (info.getRole() == 1) {
-            roleName = "[管理员]";
-        }
-        if (TextUtils.isEmpty(mNickName)) {
-            nickNameView.setText(info.getUserID() + roleName);
-        } else {
-            nickNameView.setText(mNickName + roleName);
-        }
+        BusinessHelper.setDisplayNameWithRole(nickNameView, mNickName, info.getRole());
         accountView.setText(info.getUserID());
 
         mSignature = info.getSelfSignature();

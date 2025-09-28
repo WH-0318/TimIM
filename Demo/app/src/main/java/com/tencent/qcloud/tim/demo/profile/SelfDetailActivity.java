@@ -31,6 +31,7 @@ import com.tencent.qcloud.tuikit.timcommon.component.activities.SelectionActivit
 import com.tencent.qcloud.tuikit.timcommon.component.gatherimage.ShadeImageView;
 import com.tencent.qcloud.tuikit.timcommon.component.impl.GlideEngine;
 import com.tencent.qcloud.tuikit.timcommon.component.interfaces.ITitleBarLayout;
+import com.tencent.qcloud.tuikit.timcommon.util.BusinessHelper;
 import com.tencent.qcloud.tuikit.timcommon.util.ScreenUtil;
 
 import java.util.ArrayList;
@@ -108,12 +109,8 @@ public class SelfDetailActivity extends BaseLightActivity implements View.OnClic
         faceUrl = info.getFaceUrl();
         int radius = getResources().getDimensionPixelSize(R.dimen.demo_profile_face_radius);
         GlideEngine.loadUserIcon(selfIcon, faceUrl, radius);
-        String roleName = "";
-        if (info.getRole() == 1) {
-            roleName = "[管理员]";
-        }
         nickName = info.getNickName();
-        nickNameLv.setContent(nickName + roleName);
+        BusinessHelper.setDisplayNameWithRole(nickNameLv.getContentView(), nickName, info.getRole());
         birthday = info.getBirthday();
         String birthdayStr = String.valueOf(info.getBirthday());
         if (TextUtils.isEmpty(birthdayStr) || birthdayStr.length() < 8) {

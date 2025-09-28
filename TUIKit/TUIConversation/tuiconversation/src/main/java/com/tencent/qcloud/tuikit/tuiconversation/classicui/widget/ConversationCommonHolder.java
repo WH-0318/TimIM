@@ -15,6 +15,7 @@ import com.tencent.qcloud.tuicore.TUIThemeManager;
 import com.tencent.qcloud.tuikit.timcommon.bean.TUIMessageBean;
 import com.tencent.qcloud.tuikit.timcommon.component.UnreadCountTextView;
 import com.tencent.qcloud.tuikit.timcommon.component.face.FaceManager;
+import com.tencent.qcloud.tuikit.timcommon.util.BusinessHelper;
 import com.tencent.qcloud.tuikit.timcommon.util.DateTimeUtil;
 import com.tencent.qcloud.tuikit.tuiconversation.R;
 import com.tencent.qcloud.tuikit.tuiconversation.bean.ConversationInfo;
@@ -92,7 +93,7 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
             foldGroupNameDivider.setVisibility(View.VISIBLE);
             foldGroupNameTv.setText(conversation.getTitle());
         } else {
-            titleText.setText(conversation.getTitle());
+            BusinessHelper.setDisplayNameWithRole(titleText, conversation.getTitle(), conversation.getRole());
             foldGroupNameTv.setVisibility(View.GONE);
             foldGroupNameDivider.setVisibility(View.GONE);
         }

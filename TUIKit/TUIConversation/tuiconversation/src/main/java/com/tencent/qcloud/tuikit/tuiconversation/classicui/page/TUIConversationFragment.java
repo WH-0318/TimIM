@@ -187,6 +187,9 @@ public class TUIConversationFragment extends Fragment {
     }
 
     private void showItemPopMenu(View view, final ConversationInfo conversationInfo) {
+        if (TextUtils.isEmpty(conversationInfo.getConversationId())) {
+            return;
+        }
         mConversationPopActions.clear();
 
         PopMenuAction hideAction = new PopMenuAction();

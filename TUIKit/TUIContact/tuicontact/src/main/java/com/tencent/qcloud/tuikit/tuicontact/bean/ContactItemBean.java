@@ -257,14 +257,6 @@ public class ContactItemBean extends BaseIndexPinyinBean implements Comparable<C
         }
     }
 
-    public String getDisplayNameWithRole() {
-        String roleName = "";
-        if (getRole() == 1) {
-            roleName = "[管理员]";
-        }
-        return getDisplayName() + roleName;
-    }
-
     @Override
     public int compareTo(ContactItemBean contactItemBean) {
         return contactItemBean.getWeight() - this.weight;

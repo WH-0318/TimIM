@@ -18,6 +18,7 @@ import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.qcloud.tuicore.TUIConstants;
 import com.tencent.qcloud.tuikit.timcommon.bean.GroupProfileBean;
 import com.tencent.qcloud.tuikit.timcommon.component.impl.GlideEngine;
+import com.tencent.qcloud.tuikit.timcommon.util.BusinessHelper;
 import com.tencent.qcloud.tuikit.timcommon.util.ScreenUtil;
 import com.tencent.qcloud.tuikit.tuicontact.R;
 import com.tencent.qcloud.tuikit.tuicontact.bean.GroupMemberInfo;
@@ -57,8 +58,7 @@ public class GroupMemberGridAdapter extends RecyclerView.Adapter<GroupMemberGrid
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final GroupMemberInfo groupMemberInfo = getItem(position);
         GlideEngine.loadImage(holder.memberIcon, groupMemberInfo.getFaceUrl());
-        holder.memberName.setText(groupMemberInfo.getDisplayNameWithRole());
-
+        BusinessHelper.setDisplayNameWithRole(holder.memberName, groupMemberInfo.getDisplayName(), groupMemberInfo.getRole());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

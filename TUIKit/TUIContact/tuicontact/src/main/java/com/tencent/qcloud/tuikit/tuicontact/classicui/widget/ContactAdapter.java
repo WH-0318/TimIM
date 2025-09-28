@@ -12,6 +12,7 @@ import com.tencent.imsdk.v2.V2TIMUserStatus;
 import com.tencent.qcloud.tuicore.TUIThemeManager;
 import com.tencent.qcloud.tuikit.timcommon.component.gatherimage.ShadeImageView;
 import com.tencent.qcloud.tuikit.timcommon.component.impl.GlideEngine;
+import com.tencent.qcloud.tuikit.timcommon.util.BusinessHelper;
 import com.tencent.qcloud.tuikit.timcommon.util.ScreenUtil;
 import com.tencent.qcloud.tuikit.timcommon.util.TUIUtil;
 import com.tencent.qcloud.tuikit.tuicontact.R;
@@ -59,8 +60,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ContactAdapter.ViewHolder holder, final int position) {
         final ContactItemBean contactBean = mData.get(position);
-        holder.tvName.setText(contactBean.getDisplayNameWithRole());
-
+        BusinessHelper.setDisplayNameWithRole(holder.tvName, contactBean.getDisplayName(), contactBean.getRole());
         if (mOnSelectChangedListener != null) {
             holder.ccSelect.setVisibility(View.VISIBLE);
             holder.ccSelect.setChecked(contactBean.isSelected());

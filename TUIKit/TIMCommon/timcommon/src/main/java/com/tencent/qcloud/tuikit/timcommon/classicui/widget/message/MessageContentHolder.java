@@ -31,6 +31,7 @@ import com.tencent.qcloud.tuikit.timcommon.R;
 import com.tencent.qcloud.tuikit.timcommon.bean.MessageRepliesBean;
 import com.tencent.qcloud.tuikit.timcommon.bean.TUIMessageBean;
 import com.tencent.qcloud.tuikit.timcommon.config.classicui.TUIConfigClassic;
+import com.tencent.qcloud.tuikit.timcommon.util.BusinessHelper;
 import com.tencent.qcloud.tuikit.timcommon.util.DateTimeUtil;
 import com.tencent.qcloud.tuikit.timcommon.util.ScreenUtil;
 import com.tencent.qcloud.tuikit.timcommon.util.TUIUtil;
@@ -415,7 +416,7 @@ public abstract class MessageContentHolder<T extends TUIMessageBean> extends Mes
             leftUserNameText.setTextSize(TUIConfigClassic.getReceiveNickNameFontSize());
         }
 
-        leftUserNameText.setText(msg.getUserDisplayNameWithRole());
+        BusinessHelper.setDisplayNameWithRole(leftUserNameText, msg.getUserDisplayName(), msg.getRole());
     }
 
     private void setUserIcon(T msg) {

@@ -128,6 +128,16 @@ public class ConversationInfo implements Serializable, Comparable<ConversationIn
      */
     private long orderKey;
 
+    private int role;
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
+
     public ConversationInfo() {}
 
     public String getConversationId() {

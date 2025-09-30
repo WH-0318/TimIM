@@ -17,6 +17,7 @@
         android:id="@+id/about_sdk_version_lv"
         android:layout_width="match_parent"
         android:layout_height="@dimen/demo_profile_item_height"
+        android:visibility="gone"
         app:name="@string/demo_about_sdk_version" />
 
     <com.tencent.qcloud.tuikit.timcommon.component.LineControllerView
@@ -55,6 +56,7 @@
         android:id="@+id/third_part_shared_lv"
         android:layout_width="match_parent"
         android:layout_height="@dimen/demo_profile_item_height"
+        android:visibility="gone"
         app:canNav="true"
         app:isTop="true"
         app:name="@string/third_part_shared_list" />
@@ -71,6 +73,7 @@
         android:id="@+id/about_im_lv"
         android:layout_width="match_parent"
         android:layout_height="@dimen/demo_profile_item_height"
+        android:visibility="gone"
         app:canNav="true"
         app:isTop="true"
         app:name="@string/demo_contact_us" />

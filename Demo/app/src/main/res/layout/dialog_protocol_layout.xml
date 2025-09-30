@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content_layout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_height="wrap_content"
+    android:paddingTop="30dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingBottom="24dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="众意IM法律条款及隐私政策"
+        android:textSize="20dp"
+        android:textColor="#333333"
+        android:textStyle="bold" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_marginTop="16dp">
+        <TextView
+            android:id="@+id/protocol_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="温馨提示"
+            android:textSize="14dp"
+            android:textColor="#666666"
+            android:lineSpacingExtra="3dp"/>
+    </ScrollView>
+    <com.allen.library.shape.ShapeTextView
+        android:id="@+id/agree_text"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="18dp"
+        android:gravity="center"
+        android:text="同意并继续"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:shapeSolidColor="@color/colorPrimary"
+        app:shapeCornersRadius="8dp"/>
+    <TextView
+        android:id="@+id/exit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="不同意并退出"
+        android:textSize="14dp"
+        android:textColor="#AFAFAF" />
+</LinearLayout>

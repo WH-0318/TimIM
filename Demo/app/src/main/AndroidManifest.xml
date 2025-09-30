@@ -33,6 +33,7 @@
         <data android:scheme="pushscheme" android:path="/detail" android:host="com.tencent.qcloud"/>
       </intent-filter>
     </activity>
+    <activity android:name=".profile.ProtocolActivity" android:screenOrientation="portrait"/>
     <activity android:name="com.tencent.qcloud.tim.demo.profile.SelfDetailMinamalistActivity" android:screenOrientation="portrait"/>
     <activity android:name="com.tencent.qcloud.tim.demo.profile.AboutIMMinamalistActivity" android:screenOrientation="portrait"/>
   </application>

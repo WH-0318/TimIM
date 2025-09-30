@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.blankj.utilcode.util.SPUtils;
 import com.tencent.imsdk.BaseConstants;
 import com.tencent.qcloud.tim.demo.bean.UserInfo;
 import com.tencent.qcloud.tim.demo.config.AppConfig;
+import com.tencent.qcloud.tim.demo.dialog.ProtocolDialog;
 import com.tencent.qcloud.tim.demo.login.LoginForDevActivity;
 import com.tencent.qcloud.tim.demo.login.LoginWrapper;
 import com.tencent.qcloud.tim.demo.main.MainActivity;
@@ -44,7 +47,29 @@ public class SplashActivity extends BaseLightActivity {
             getWindow().setNavigationBarColor(Color.TRANSPARENT);
         }
 
-        handleData();
+        if (SPUtils.getInstance().getBoolean("key_shown_protocol_dialog")) {
+            handleData();
+        } else {
+            showProtocolDialog();
+        }
+    }
+
+    private void showProtocolDialog() {
+        ProtocolDialog dialog = new ProtocolDialog(this);
+        dialog.setAgreeListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SPUtils.getInstance().put("key_shown_protocol_dialog", true);
+                handleData();
+            }
+        });
+        dialog.setExitListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        dialog.show();
     }
 
     private void handleData() {

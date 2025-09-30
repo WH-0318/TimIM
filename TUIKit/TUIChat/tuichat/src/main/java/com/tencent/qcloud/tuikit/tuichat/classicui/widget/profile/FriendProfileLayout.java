@@ -3,6 +3,7 @@ package com.tencent.qcloud.tuikit.tuichat.classicui.widget.profile;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -220,6 +221,12 @@ public class FriendProfileLayout extends LinearLayout {
                     return;
                 }
 
+                if (v2TIMUserFullInfos.get(0).getRole() == 1) {
+                    mNickNameView.setTextColor(Color.RED);
+                    mAddBlackView.setVisibility(GONE);
+                    deleteFriendBtn.setVisibility(GONE);
+                    clearMessageBtn.setVisibility(GONE);
+                }
                 BusinessHelper.setDisplayNameWithRole(mNickNameView, mNickNameView.getText().toString(), v2TIMUserFullInfos.get(0).getRole());
             }
 

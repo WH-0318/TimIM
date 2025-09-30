@@ -45,7 +45,7 @@
     <string name="allow_type_deny_any">拒绝任何人</string>
     <string name="allow_type_need_confirm">需要验证</string>
     <string name="exit">退出登录</string>
-    <string name="about_im">关于腾讯云·IM</string>
+    <string name="about_im">关于众意IM</string>
     <string name="appkit_show_recent_calls">显示通话记录</string>
     <string name="appkit_recent_calls_tab_name">通话记录</string>
     <string name="modify_birthday">生日</string>

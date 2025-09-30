@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.tencent.qcloud.tim.demo.R;
+import com.tencent.qcloud.tim.demo.profile.ProtocolActivity;
 import com.trtc.tuikit.common.util.ToastUtil;
 
 public class BusinessHelper {
@@ -35,7 +36,7 @@ public class BusinessHelper {
         builder.setSpan(new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                ToastUtil.toastShortMessage("隐私政策");
+                ProtocolActivity.enter(widget.getContext(), ProtocolActivity.PROTOCOL_TYPE_PRIVACY);
             }
 
             @Override
@@ -53,7 +54,7 @@ public class BusinessHelper {
         builder.setSpan(new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                ToastUtil.toastShortMessage("用户协议");
+                ProtocolActivity.enter(widget.getContext(), ProtocolActivity.PROTOCOL_TYPE_USER);
             }
 
             @Override

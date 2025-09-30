@@ -295,25 +295,25 @@ public class ConferenceServiceInitializer extends ServiceInitializer implements 
             roomExtension.setExtensionListener(new RoomClickListener());
             return Collections.singletonList(roomExtension);
         }
-        if (TextUtils.equals(extensionID, TUIConstants.TIMAppKit.Extension.ProfileSettings.CLASSIC_EXTENSION_ID)) {
-            View settingView = LayoutInflater.from(getAppContext())
-                    .inflate(R.layout.tuiroomkit_room_setting_extention_layout, null);
-            settingView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TUICore.startActivity("Chat2RoomExtensionSettingsActivity", new Bundle());
-                }
-            });
-
-            LineControllerView groupView = settingView.findViewById(R.id.tuiroomkit_extension_setting);
-            groupView.setCanNav(true);
-            HashMap<String, Object> paramMap = new HashMap<>();
-            paramMap.put(TUIConstants.TIMAppKit.Extension.ProfileSettings.KEY_VIEW, settingView);
-            TUIExtensionInfo extensionInfo = new TUIExtensionInfo();
-            extensionInfo.setData(paramMap);
-            extensionInfo.setWeight(501);
-            return Collections.singletonList(extensionInfo);
-        }
+//        if (TextUtils.equals(extensionID, TUIConstants.TIMAppKit.Extension.ProfileSettings.CLASSIC_EXTENSION_ID)) {
+//            View settingView = LayoutInflater.from(getAppContext())
+//                    .inflate(R.layout.tuiroomkit_room_setting_extention_layout, null);
+//            settingView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    TUICore.startActivity("Chat2RoomExtensionSettingsActivity", new Bundle());
+//                }
+//            });
+//
+//            LineControllerView groupView = settingView.findViewById(R.id.tuiroomkit_extension_setting);
+//            groupView.setCanNav(true);
+//            HashMap<String, Object> paramMap = new HashMap<>();
+//            paramMap.put(TUIConstants.TIMAppKit.Extension.ProfileSettings.KEY_VIEW, settingView);
+//            TUIExtensionInfo extensionInfo = new TUIExtensionInfo();
+//            extensionInfo.setData(paramMap);
+//            extensionInfo.setWeight(501);
+//            return Collections.singletonList(extensionInfo);
+//        }
         return null;
     }
 }

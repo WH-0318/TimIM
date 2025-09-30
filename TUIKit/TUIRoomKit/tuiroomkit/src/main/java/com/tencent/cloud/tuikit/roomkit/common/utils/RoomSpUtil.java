@@ -18,7 +18,7 @@ public class RoomSpUtil {
 
     public static boolean getAudioSwitchFromSp() {
         SPUtils sp = SPUtils.getInstance(ROOM_SP_FILE_NAME);
-        return sp.getBoolean(SP_ROOM_AUDIO_SWITCH, true);
+        return sp.getBoolean(SP_ROOM_AUDIO_SWITCH, false);
     }
 
     public static void saveVideoSwitchToSp(boolean isOpen) {
@@ -28,7 +28,7 @@ public class RoomSpUtil {
 
     public static boolean getVideoSwitchFromSp() {
         SPUtils sp = SPUtils.getInstance(ROOM_SP_FILE_NAME);
-        return sp.getBoolean(SP_ROOM_VIDEO_SWITCH, true);
+        return sp.getBoolean(SP_ROOM_VIDEO_SWITCH, false);
     }
 
     public static String getUniqueRoomId() {

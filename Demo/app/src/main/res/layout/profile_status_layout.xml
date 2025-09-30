@@ -66,6 +66,7 @@
         android:layout_marginTop="10dp"
         android:background="@color/white"
         android:gravity="center"
+        android:visibility="gone"
         android:orientation="horizontal"
         android:paddingStart="15.36dp"
         android:paddingTop="11.52dp"

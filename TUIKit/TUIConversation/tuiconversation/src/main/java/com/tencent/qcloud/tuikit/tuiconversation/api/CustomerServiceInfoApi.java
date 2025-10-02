@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 
 import com.hjq.http.config.IRequestApi;
 
+import java.io.Serializable;
+
 public final class CustomerServiceInfoApi implements IRequestApi {
 
     @NonNull
@@ -12,7 +14,7 @@ public final class CustomerServiceInfoApi implements IRequestApi {
         return "user/getAdminList";
     }
 
-    public static final class Bean {
+    public static final class Bean implements Serializable {
         private String id;
         private String avatar;
         private String nickName;

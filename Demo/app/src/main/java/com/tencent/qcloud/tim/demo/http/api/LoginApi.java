@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 
 import com.hjq.http.config.IRequestApi;
 
+import java.io.Serializable;
+
 public final class LoginApi implements IRequestApi {
 
     @NonNull
@@ -25,7 +27,7 @@ public final class LoginApi implements IRequestApi {
         return this;
     }
 
-    public static final class Bean {
+    public static final class Bean implements Serializable {
 
         private int isFaceAuth;
         private String imAccountUsername;

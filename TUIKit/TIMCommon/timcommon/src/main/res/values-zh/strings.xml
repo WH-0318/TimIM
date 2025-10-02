@@ -28,7 +28,7 @@
     <string name="has_all_read">全部已读</string>
     <string name="someone_has_read">%d人已读</string>
 
-    <string name="translation_support">由腾讯云 IM 提供翻译支持</string>
+    <string name="translation_support">由众意 IM 提供翻译支持</string>
     <string name="timcommon_no_support_msg">不支持的自定义消息</string>
 
 </resources>

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.hjq.http.config.IRequestApi;
 
+import java.io.Serializable;
 import java.util.List;
 
 public final class UserInfoApi implements IRequestApi {
@@ -14,7 +15,7 @@ public final class UserInfoApi implements IRequestApi {
         return "user/info";
     }
 
-    public class Bean {
+    public class Bean implements Serializable {
 
         private int id;
         private String username;

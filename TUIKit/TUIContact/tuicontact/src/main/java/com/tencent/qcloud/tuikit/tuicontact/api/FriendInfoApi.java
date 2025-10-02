@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 
 import com.hjq.http.config.IRequestApi;
 
+import java.io.Serializable;
+
 public final class FriendInfoApi implements IRequestApi {
 
     @NonNull
@@ -18,7 +20,7 @@ public final class FriendInfoApi implements IRequestApi {
         return this;
     }
 
-    public class Bean {
+    public class Bean implements Serializable {
         private String id;
         private String mobile;
 

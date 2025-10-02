@@ -11,6 +11,7 @@ import com.blankj.utilcode.util.SizeUtils;
 public class BusinessHelper {
 
     public static void setDisplayNameWithRole(TextView textView, String displayName, int role) {
+        textView.setTextColor(Color.parseColor("#333333"));
         String roleName = "";
         if (role == 1) {
             roleName = " 官方客服";
@@ -20,6 +21,7 @@ public class BusinessHelper {
             return;
         }
 
+        textView.setTextColor(Color.RED);
         SpannableStringBuilder sb = new SpannableStringBuilder(displayName + roleName);
         int start = displayName.length() + 1;
         int end = sb.length();

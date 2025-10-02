@@ -31,16 +31,34 @@ android {
     buildFeatures {
         buildConfig = true
     }
+
+    signingConfigs {
+        release {
+            storeFile file('./im_release')
+            storePassword '123456'
+            keyPassword '123456'
+            keyAlias 'key0'
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
-//            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
             minifyEnabled false
         }
     }
 
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+        quiet true
+        ignoreWarnings true
+    }
 
     repositories {
         flatDir {

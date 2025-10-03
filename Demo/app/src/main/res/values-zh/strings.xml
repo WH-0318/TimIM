@@ -1,5 +1,5 @@
 <resources>
-    <string name="demo_app_name">腾讯云IM</string>
+    <string name="demo_app_name">众意IM</string>
 
     <string name="test_custom_message">查看详情>></string>
 
@@ -21,8 +21,8 @@
     <string name="demo_login_verification_code_label">验证码</string>
     <string name="demo_search">搜索</string>
 
-    <string name="login_title">腾讯云即时通信IM</string>
-    <string name="login_sub_title">欢迎使用本 APP 体验腾讯云 IM 产品服务</string>
+    <string name="login_title">众意IM</string>
+    <string name="login_sub_title">欢迎使用本 APP 体验众意 IM 产品服务</string>
     <string name="input_number">请输入手机号</string>
     <string name="input_verification">请输入短信验证码</string>
     <string name="verification_code">获取验证码</string>
@@ -45,7 +45,7 @@
     <string name="allow_type_deny_any">拒绝任何人</string>
     <string name="allow_type_need_confirm">需要验证</string>
     <string name="exit">退出登录</string>
-    <string name="about_im">关于众意IM</string>
+    <string name="about_im">关于众意·IM</string>
     <string name="appkit_show_recent_calls">显示通话记录</string>
     <string name="appkit_recent_calls_tab_name">通话记录</string>
     <string name="modify_birthday">生日</string>
@@ -93,8 +93,8 @@
 
     <string name="demo_self_detail_modify_nickname_rule">仅限中文、字母、数字和下划线</string>
 
-    <string name="conversation_title">腾讯云·IM</string>
-    <string name="conversation_title_disconnected">腾讯云·IM(未连接)</string>
+    <string name="conversation_title">钟意·IM</string>
+    <string name="conversation_title_disconnected">众意·IM(未连接)</string>
     <string name="conversation_title_connecting">连接中...</string>
     <string name="conversation_title_loading">收取中...</string>
     <string name="contact_title">通讯录</string>
@@ -165,9 +165,9 @@
     <string name="im_privacy">隐私政策</string>
     <string name="im_statement">免责声明</string>
     <string name="im_user_agreement">用户协议</string>
-    <string name="im_statement_content">腾讯云IM APP（“本产品”）是由腾讯云提供的一款测试产品，腾讯云享有本产品的著作权和所有权。本产品仅用于功能体验，不得用于任何商业用途。为配合相关部门监管要求，严禁在使用中有任何色情、辱骂、暴恐、涉政等违法内容传播。</string>
+    <string name="im_statement_content">众意IM APP（“本产品”）是由北京众意自主研发的一款im产品，北京众意享有本产品的著作权和所有权。为配合相关部门监管要求，严禁在使用中有任何色情、辱骂、暴恐、涉政等违法内容传播。</string>
     <string name="im_privacy_tips">请先阅读并同意协议</string>
-    <string name="demo_im_privacy_dialog_tips">欢迎使用腾讯云即时通信 IM，为保护您的个人信息安全，我们更新了《隐私政策》，主要完善了收集用户信息的具体内容和目的、增加了第三方SDK使用等方面的内容。\n\n请您点击 《用户协议》、《隐私政策摘要》、《隐私政策》、《个人信息收集清单》和《第三方信息共享清单》并仔细阅读，如您同意以上内容，请点击“同意并继续”，开始使用我们的产品与服务！</string>
+    <string name="demo_im_privacy_dialog_tips">欢迎使用众意 IM，为保护您的个人信息安全，我们更新了《隐私政策》，主要完善了收集用户信息的具体内容和目的、增加了第三方SDK使用等方面的内容。\n\n请您点击 《用户协议》、《隐私政策摘要》、《隐私政策》、《个人信息收集清单》和《第三方信息共享清单》并仔细阅读，如您同意以上内容，请点击“同意并继续”，开始使用我们的产品与服务！</string>
     <string name="demo_im_privacy_agree">同意并继续</string>
     <string name="demo_im_privacy_refuse_and_exit">不同意，退出</string>
 

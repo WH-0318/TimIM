@@ -74,6 +74,12 @@ public class AboutIMActivity extends BaseLightActivity implements View.OnClickLi
                 ProtocolActivity.enter(AboutIMActivity.this, ProtocolActivity.PROTOCOL_TYPE_PERSONAL_INFO);
             }
         });
+        findViewById(R.id.third_part_shared_lv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProtocolActivity.enter(AboutIMActivity.this, ProtocolActivity.PROTOCOL_TYPE_THIRD_INFO_SHARE_LIST);
+            }
+        });
         findViewById(R.id.cancel_account_lv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

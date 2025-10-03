@@ -26,6 +26,7 @@ public class ProtocolActivity extends BaseLightActivity {
     public static final int PROTOCOL_TYPE_USER = 2;
     public static final int PROTOCOL_TYPE_STATEMENT = 3;
     public static final int PROTOCOL_TYPE_PERSONAL_INFO = 4;
+    public static final int PROTOCOL_TYPE_THIRD_INFO_SHARE_LIST = 5;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +54,10 @@ public class ProtocolActivity extends BaseLightActivity {
             case PROTOCOL_TYPE_PERSONAL_INFO:
                 titleResId = R.string.self_infomation_collection_list;
                 fileName = "personal_info_protocol.html";
+                break;
+            case PROTOCOL_TYPE_THIRD_INFO_SHARE_LIST:
+                titleResId = R.string.third_part_shared_list;
+                fileName = "third_info_share_list.html";
                 break;
         }
         titleBarLayout.getMiddleTitle().setText(getString(titleResId));

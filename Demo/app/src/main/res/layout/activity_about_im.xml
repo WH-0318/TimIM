@@ -56,7 +56,6 @@
         android:id="@+id/third_part_shared_lv"
         android:layout_width="match_parent"
         android:layout_height="@dimen/demo_profile_item_height"
-        android:visibility="gone"
         app:canNav="true"
         app:isTop="true"
         app:name="@string/third_part_shared_list" />

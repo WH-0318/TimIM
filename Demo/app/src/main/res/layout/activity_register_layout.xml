@@ -179,7 +179,7 @@
             android:textSize="17dp"
             android:textColor="#1D2129"
             android:background="@color/transparent"
-            android:hint="请输入邀请码（必填）"
+            android:hint="请输入邀请码（非必填）"
             android:inputType="number"
             android:textColorHint="#A9AEB8"
             android:maxLength="20"

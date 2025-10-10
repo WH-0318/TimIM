@@ -2,9 +2,12 @@ package com.tencent.qcloud.tim.demo.bean;
 
 import android.content.SharedPreferences;
 import com.google.gson.Gson;
+import com.hjq.http.EasyConfig;
 import com.tencent.imsdk.BaseConstants;
 import com.tencent.qcloud.tim.demo.TIMAppService;
 import com.tencent.qcloud.tim.demo.utils.Constants;
+import com.tencent.qcloud.tuicore.util.SPUtils;
+
 import java.io.Serializable;
 
 public class UserInfo implements Serializable {
@@ -144,6 +147,8 @@ public class UserInfo implements Serializable {
     }
 
     public void cleanUserInfo() {
+        SPUtils.getInstance().remove("token");
+        EasyConfig.getInstance().removeHeader("Authorization");
         sdkAppId = 0;
         zone = "";
         token = "";

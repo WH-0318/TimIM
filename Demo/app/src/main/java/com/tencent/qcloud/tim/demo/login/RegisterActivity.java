@@ -113,7 +113,7 @@ public class RegisterActivity extends BaseLightActivity {
                     }
                 }
         );
-        BusinessHelper.updateTextStyle(tvRegister, etAccount, etCode, etPwd, etConfirmPwd, etInviteCode);
+        BusinessHelper.updateTextStyle(tvRegister, etAccount, etCode, etPwd, etConfirmPwd);
     }
 
     private void initLoginTextStyle(TextView loginText) {

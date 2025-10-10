@@ -162,7 +162,7 @@ public class DemoApplication extends MultiDexApplication {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .build();
 
-        EasyConfig.with(okHttpClient)
+        EasyConfig config = EasyConfig.with(okHttpClient)
                 // 是否打印日志
                 //.setLogEnabled(BuildConfig.DEBUG)
                 // 设置服务器配置（必须设置）
@@ -181,11 +181,14 @@ public class DemoApplication extends MultiDexApplication {
                 // 设置请求重试次数
                 .setRetryCount(1)
                 // 设置请求重试时间
-                .setRetryTime(2000)
+                .setRetryTime(2000);
                 // 添加全局请求参数
                 //.addParam("xxx", "xxx")
                 // 添加全局请求头
-                .addHeader("Authorization", SPUtils.getInstance().getString("token"))
-                .into();
+                //.addHeader("Authorization", SPUtils.getInstance().getString("token"))
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString("token"))) {
+            config.addHeader("Authorization", SPUtils.getInstance().getString("token"));
+        }
+        config.into();
     }
 }

@@ -64,6 +64,7 @@
         android:id="@+id/cancel_account_lv"
         android:layout_width="match_parent"
         android:layout_height="@dimen/demo_profile_item_height"
+        android:visibility="gone"
         app:canNav="true"
         app:isTop="true"
         app:name="@string/cancel_account" />

@@ -151,6 +151,7 @@ public class ConversationPresenter {
                 if (updateMarkedUnreadAndHiddenList(conversationList)) {
                     refreshUnreadCount();
                 }
+                updateUserRole(conversationList);
             }
 
             @Override
@@ -269,7 +270,7 @@ public class ConversationPresenter {
 
     private void realAddCustomerService(List<ConversationInfo> conversationInfoList) {
         ConversationInfo customerServiceInfo = new ConversationInfo();
-        customerServiceInfo.setTitle("客服");
+        customerServiceInfo.setTitle("众意官方客服");
         customerServiceInfo.setTop(true);
         conversationInfoList.add(customerServiceInfo);
         onNewConversation(conversationInfoList, false);

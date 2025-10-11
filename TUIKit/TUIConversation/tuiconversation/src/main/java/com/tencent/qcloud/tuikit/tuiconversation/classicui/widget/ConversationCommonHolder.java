@@ -95,10 +95,10 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
         } else {
             if (conversation.getConversationId() == null || conversation.getConversationId().isEmpty()) {
                 titleText.setTextColor(Color.RED);
+                titleText.setText(conversation.getTitle());
             } else {
-                titleText.setTextColor(Color.parseColor("#181818"));
+                BusinessHelper.setDisplayNameWithRole(titleText, conversation.getTitle(), conversation.getRole());
             }
-            BusinessHelper.setDisplayNameWithRole(titleText, conversation.getTitle(), conversation.getRole());
             foldGroupNameTv.setVisibility(View.GONE);
             foldGroupNameDivider.setVisibility(View.GONE);
         }
